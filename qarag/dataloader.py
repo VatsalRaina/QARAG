@@ -24,13 +24,13 @@ def process_squad(save_dir):
     with open(save_dir + 'data.json', 'w') as f:
         json.dump(enhanced_dataset, f)
     
-    def main(args):
+def main(args):
 
-        print("Started processing SQuAD.")
-        process_squad(args.save_dir)
-        print("Finished processing SQuAD.")
-    
+    print("Started processing SQuAD.")
+    process_squad(args.save_dir)
+    print("Finished processing SQuAD.")
 
-    if __name__ == "__main__":
-        args = parser.parse_args()
-        main(args)
+
+if __name__ == "__main__":
+    args = parser.parse_args()
+    main(args)
