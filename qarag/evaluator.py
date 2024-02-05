@@ -36,7 +36,7 @@ def main(args):
         chunk_embeddings = np.load(f)
     chunk_embeddings = torch.from_numpy(chunk_embeddings)
     with open(args.data_dir + 'queries_' + args.embedder + '.npy', 'rb') as f:
-        query_embeddings = np.load(f)
+        query_embeddings = np.load(f, allow_pickle=True)
     query_embeddings = torch.from_numpy(query_embeddings)
 
     # Find closest embeddings for each query (using cosine distance)
