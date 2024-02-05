@@ -42,7 +42,7 @@ def main(args):
     query_embeddings = torch.from_numpy(query_embeddings)
 
     # Find closest embeddings for each query (using cosine distance)
-    min_indices = get_neighbours(chunk_embeddings, query_embeddings)
+    min_indices = get_neighbours(chunk_embeddings, query_embeddings, args.K)
     print(min_indices.shape)
 
     hits = 0
