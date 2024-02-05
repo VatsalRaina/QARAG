@@ -16,7 +16,8 @@ def main(args):
     print("Started embedding chunks.")
     with open(args.data_dir + 'chunks.json', 'r') as f:
         chunks = json.load(f)
-    chunk_embeddings = model.encode(chunks)
+    chunk_embeddings = np.asarray(model.encode(chunks))
+    print(query_embeddings.shape)
     with open(args.data_dir + 'chunks_' + args.embedder + '.npy', 'wb') as f:
         np.save(f, chunk_embeddings)
     print("Finished embedding chunks.")
@@ -26,7 +27,7 @@ def main(args):
         data = json.load(f)
     queries = [ex['question'] for ex in data]
     query_embeddings = np.asarray(model.encode(queries))
-    print(query_embeddings.size())
+    print(query_embeddings.shape)
     with open(args.data_dir + 'queries_' + args.embedder + '.npy', 'wb') as f:
         np.save(f, query_embeddings)
     print("Finished embedding queries.")
