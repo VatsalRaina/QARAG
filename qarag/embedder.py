@@ -25,7 +25,8 @@ def main(args):
     with open(args.data_dir + 'data.json', 'r') as f:
         data = json.load(f)
     queries = [ex['question'] for ex in data]
-    query_embeddings = model.encode(queries)
+    query_embeddings = np.asarray(model.encode(queries))
+    print(query_embeddings.size())
     with open(args.data_dir + 'queries_' + args.embedder + '.npy', 'wb') as f:
         np.save(f, query_embeddings)
     print("Finished embedding queries.")
