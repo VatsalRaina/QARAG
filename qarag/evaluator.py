@@ -43,7 +43,7 @@ def main(args):
 
     # Find closest embeddings for each query (using cosine distance)
     min_indices = get_neighbours(chunk_embeddings, query_embeddings, args.K)
-    print(min_indices.shape)
+    #print(min_indices.shape)
 
     hits = 0
     for count, label in enumerate(labels):
