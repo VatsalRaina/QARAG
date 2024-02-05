@@ -35,7 +35,7 @@ def main(args):
     with open(args.data_dir + 'chunks_' + args.embedder + '.npy', 'rb') as f:
         chunk_embeddings = np.load(f)
     chunk_embeddings = torch.from_numpy(chunk_embeddings)
-    with open(args.data_dir + 'queries_' + args.embedder + '.npy', 'wb') as f:
+    with open(args.data_dir + 'queries_' + args.embedder + '.npy', 'rb') as f:
         query_embeddings = np.load(f)
     query_embeddings = torch.from_numpy(query_embeddings)
 
