@@ -24,6 +24,9 @@ def process_squad(save_dir):
     with open(save_dir + 'data.json', 'w') as f:
         json.dump(enhanced_dataset, f)
     
+def process_hotpotqa(save_dir):
+    dataset = load_dataset("hotpot_qa", "fullwiki")['validation']
+
 def main(args):
 
     print("Started processing SQuAD.")
