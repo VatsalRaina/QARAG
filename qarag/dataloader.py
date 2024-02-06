@@ -5,10 +5,11 @@ import argparse
 
 parser = argparse.ArgumentParser(description='Get all command line arguments.')
 parser.add_argument('--save_dir', type=str, default='', help='Specify the path to save the processed data.')
+parser.add_argument('--split', type=str, default='validation', help='Split of data.')
 
 
-def process_squad(save_dir):
-    dataset = load_dataset("squad")["validation"]
+def process_squad(save_dir, split):
+    dataset = load_dataset("squad")[split]
     unique_contexts = []
     for ex in dataset:
         if ex['context'] not in unique_contexts: unique_contexts.append(ex['context'])
@@ -30,7 +31,7 @@ def process_hotpotqa(save_dir):
 def main(args):
 
     print("Started processing SQuAD.")
-    process_squad(args.save_dir)
+    process_squad(args.save_dir, args.split)
     print("Finished processing SQuAD.")
 
 
