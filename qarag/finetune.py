@@ -29,7 +29,7 @@ def main(args):
     # Prepare the model
     model = SentenceTransformer("sentence-transformers/" + args.embedder)
     train_loss = losses.MultipleNegativesRankingLoss(model=model)
-    model.fit(train_objectives=[(train_dataloader, train_loss)], epochs=10) 
+    model.fit(train_objectives=[(train_dataloader, train_loss)], epochs=2) 
     model.save(args.save_path)
 
 
