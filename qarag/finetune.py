@@ -21,7 +21,6 @@ def main(args):
         data = json.load(f)
     train_examples = []
     for count, ex in enumerate(data):
-        if count == 100: break
         train_examples.append(InputExample(texts=[ex['question'], ex['context']]))
     train_dataloader = DataLoader(train_examples, shuffle=True, batch_size=16)
 
