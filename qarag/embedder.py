@@ -7,11 +7,16 @@ import numpy as np
 parser = argparse.ArgumentParser(description='Get all command line arguments.')
 parser.add_argument('--data_dir', type=str, default='', help='Specify the path to the data directory.')
 parser.add_argument('--embedder', type=str, default="sentence-t5-base", help='Specify the path to the data directory.')
+parser.add_argument('--is_local', type=str, default="no", help='Whether the embedder is locally stored.')
+
 
 
 def main(args):
 
-    model = SentenceTransformer("sentence-transformers/" + args.embedder)
+    if args.is_local == 'no':
+        model = SentenceTransformer("sentence-transformers/" + args.embedder)
+    else:
+        model = SentenceTransformer("./" + args.embedder)
 
     print("Started embedding chunks.")
     with open(args.data_dir + 'chunks.json', 'r') as f:
