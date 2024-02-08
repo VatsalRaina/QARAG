@@ -7,6 +7,7 @@ from torch.utils.data import DataLoader
 
 parser = argparse.ArgumentParser(description='Get all command line arguments.')
 parser.add_argument('--data_dir', type=str, default='', help='Specify the path to the data directory.')
+parser.add_argument('--n_epochs', type=int, default=2, help='Number of training epochs.')
 parser.add_argument('--embedder', type=str, default="sentence-t5-base", help='Specify the embedder name.')
 parser.add_argument('--is_seen', type=str, default="no", help='Whether the chunks are seen.')
 parser.add_argument('--save_path', type=str, default="", help='Save path.')
@@ -33,7 +34,7 @@ def main(args):
     # Prepare the model
     model = SentenceTransformer("sentence-transformers/" + args.embedder)
     train_loss = losses.MultipleNegativesRankingLoss(model=model)
-    model.fit(train_objectives=[(train_dataloader, train_loss)], epochs=2) 
+    model.fit(train_objectives=[(train_dataloader, train_loss)], epochs=args.n_epochs) 
     model.save(args.save_path)
 
 
