@@ -8,31 +8,33 @@ from torch.utils.data import DataLoader
 parser = argparse.ArgumentParser(description='Get all command line arguments.')
 parser.add_argument('--data_dir', type=str, default='', help='Specify the path to the data directory.')
 parser.add_argument('--embedder', type=str, default="sentence-t5-base", help='Specify the embedder name.')
+parser.add_argument('--is_seen', type=str, default="no", help='Whether the chunks are seen.')
 parser.add_argument('--save_path', type=str, default="", help='Save path.')
-
 
 
 def main(args):
 
-
     # Prepare the data
-
-    with open(args.data_dir + 'data.json', 'r') as f:
-        data = json.load(f)
     train_examples = []
-    for count, ex in enumerate(data):
-        train_examples.append(InputExample(texts=[ex['question'], ex['context']]))
+    if args.is_seen == 'no':
+        with open(args.data_dir + 'data.json', 'r') as f:
+            data = json.load(f)
+        for ex in data:
+            train_examples.append(InputExample(texts=[ex['question'], ex['context']]))
+    else:
+        with open(args.data_dir + 'chunks.json', 'r') as f:
+            chunks = json.load(f)
+        with open(args.data_dir + 'gen_questions.json', 'r') as f:
+            questions = json.load(f)
+        for chunk, question in zip(chunks, questions):
+            train_examples.append(InputExample(texts=[question, chunk]))
     train_dataloader = DataLoader(train_examples, shuffle=True, batch_size=16)
-
-
 
     # Prepare the model
     model = SentenceTransformer("sentence-transformers/" + args.embedder)
     train_loss = losses.MultipleNegativesRankingLoss(model=model)
     model.fit(train_objectives=[(train_dataloader, train_loss)], epochs=2) 
     model.save(args.save_path)
-
-
 
 
 
