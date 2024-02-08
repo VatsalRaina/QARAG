@@ -29,6 +29,10 @@ def main(args):
             questions = json.load(f)
         for chunk, question in zip(chunks, questions):
             train_examples.append(InputExample(texts=[question, chunk]))
+        with open(args.data_dir + 'gen_questions_2.json', 'r') as f:
+            questions = json.load(f)
+        for chunk, question in zip(chunks, questions):
+            train_examples.append(InputExample(texts=[question, chunk]))
     train_dataloader = DataLoader(train_examples, shuffle=True, batch_size=16)
 
     # Prepare the model
