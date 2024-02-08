@@ -15,6 +15,8 @@ parser.add_argument('--save_path', type=str, help='Load path to save results wit
 
 def main(args):
 
+    openai.api_key = args.api_key
+
     with open(args.save_path) as f:
         questions = json.load(f)
     start_point = len(questions)
