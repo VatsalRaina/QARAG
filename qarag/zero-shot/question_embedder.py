@@ -14,7 +14,7 @@ def main(args):
     model = SentenceTransformer("sentence-transformers/" + args.embedder)
 
     print("Started embedding chunks.")
-    with open(args.data_dir + 'questions.json', 'r') as f:
+    with open(args.data_dir + 'gen_questions.json', 'r') as f:
         questions = json.load(f)
     question_embeddings = np.asarray(model.encode(questions))
     with open(args.data_dir + 'questions_' + args.embedder + '.npy', 'wb') as f:
