@@ -6,6 +6,7 @@ import torch
 parser = argparse.ArgumentParser(description='Get all command line arguments.')
 parser.add_argument('--data_dir', type=str, default='', help='Specify the path to the data directory.')
 parser.add_argument('--embedder', type=str, default="sentence-t5-base", help='Specify the model name used to search for correct files.')
+parser.add_argument('--qu_count', type=int, default=1, help='The number of questions per chunk.')
 parser.add_argument('--K', type=int, default=1, help='Recall depth.')
 
 def get_neighbours(Z, B, K):
@@ -23,7 +24,7 @@ def get_neighbours(Z, B, K):
 
     _, min_indices = torch.topk(cosine_distance, K, 1, False)
 
-    return min_indices.numpy().tolist()
+    return min_indices.numpy()
 
 
 def main(args):
@@ -32,22 +33,27 @@ def main(args):
         data = json.load(f)
     labels = [ex['context_id'] for ex in data]
 
-    # with open(args.data_dir + 'chunks_' + args.embedder + '.npy', 'rb') as f:
-    #     chunk_embeddings = np.load(f)
-    question_embeddings = np.load(args.data_dir + 'questions_' + args.embedder + '.npy')
-    question_embeddings = torch.from_numpy(question_embeddings)
-    # with open(args.data_dir + 'queries_' + args.embedder + '.npy', 'rb') as f:
-    #     query_embeddings = np.load(f, allow_pickle=True)
     query_embeddings = np.load(args.data_dir + 'queries_' + args.embedder + '.npy')
     query_embeddings = torch.from_numpy(query_embeddings)
 
+    question_embeddings = np.load(args.data_dir + 'questions_' + args.embedder + '.npy')
+    question_embeddings = torch.from_numpy(question_embeddings)
+
+    qu_idx_to_chunk_idx = np.arange(len(labels))
+
+    if args.qu_count > 1:
+        for count in range(2, args.qu_count+1):
+            curr_qu_embs = torch.from_numpy(np.load(args.data_dir + 'questions_' + str(count) + '_' + args.embedder + '.npy'))
+            qu_idx_to_chunk_idx = np.concatenate([qu_idx_to_chunk_idx, np.arange(len(labels))])
+            question_embeddings = np.concatenate([question_embeddings, curr_qu_embs], axis=0)
+
     # Find closest embeddings for each query (using cosine distance)
     min_indices = get_neighbours(question_embeddings, query_embeddings, args.K)
-    #print(min_indices.shape)
+    chunk_indices = qu_idx_to_chunk_idx[min_indices]
 
     hits = 0
     for count, label in enumerate(labels):
-        if label in min_indices[count]: hits += 1
+        if label in chunk_indices[count]: hits += 1
     print("Recall at ", args.K)
     print(hits/len(labels))
 
