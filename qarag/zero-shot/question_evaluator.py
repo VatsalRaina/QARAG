@@ -48,12 +48,12 @@ def main(args):
 
     # Find closest embeddings for each query (using cosine distance)
     min_indices = get_neighbours(question_embeddings, query_embeddings, args.K)
-    chunk_indices = np.unique(qu_idx_to_chunk_idx[min_indices])
+    chunk_indices = qu_idx_to_chunk_idx[min_indices]
 
     hits = 0
     for count, label in enumerate(labels):
         if label in chunk_indices[count]: hits += 1
-    print("Recall at ", len(chunk_indices))
+    print("Recall at ", args.K)
     print(hits/len(labels))
 
 if __name__ == "__main__":
