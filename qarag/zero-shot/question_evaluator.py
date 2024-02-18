@@ -1,6 +1,7 @@
 import json
 import argparse
 import numpy as np
+import pandas as pd
 import torch
 
 parser = argparse.ArgumentParser(description='Get all command line arguments.')
@@ -22,7 +23,7 @@ def get_neighbours(Z, B, K):
     cosine_distance = cosine_distance.detach().cpu()
     cosine_similarity = cosine_similarity.detach().cpu()
 
-    _, min_indices = torch.topk(cosine_distance, K, 1, False)
+    _, min_indices = torch.topk(cosine_distance, K, 1, False, True)
 
     return min_indices.numpy()
 
@@ -47,12 +48,13 @@ def main(args):
     question_embeddings = torch.from_numpy(question_embeddings)
 
     # Find closest embeddings for each query (using cosine distance)
-    min_indices = get_neighbours(question_embeddings, query_embeddings, args.K)
+    min_indices = get_neighbours(question_embeddings, query_embeddings, args.K * args.qu_count)
     chunk_indices = qu_idx_to_chunk_idx[min_indices]
 
     hits = 0
     for count, label in enumerate(labels):
-        if label in chunk_indices[count]: hits += 1
+        curr_chunk_idxs = pd.unique(chunk_indices[count])[:args.K]
+        if label in curr_chunk_idxs: hits += 1
     print("Recall at ", args.K)
     print(hits/len(labels))
 
