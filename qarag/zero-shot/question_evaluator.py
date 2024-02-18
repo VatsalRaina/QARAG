@@ -37,8 +37,6 @@ def main(args):
     query_embeddings = torch.from_numpy(query_embeddings)
 
     question_embeddings = np.load(args.data_dir + 'questions_' + args.embedder + '.npy')
-    question_embeddings = torch.from_numpy(question_embeddings)
-
     qu_idx_to_chunk_idx = np.arange(len(labels))
 
     if args.qu_count > 1:
@@ -46,6 +44,7 @@ def main(args):
             curr_qu_embs = torch.from_numpy(np.load(args.data_dir + 'questions_' + str(count) + '_' + args.embedder + '.npy'))
             qu_idx_to_chunk_idx = np.concatenate([qu_idx_to_chunk_idx, np.arange(len(labels))])
             question_embeddings = np.concatenate([question_embeddings, curr_qu_embs], axis=0)
+    question_embeddings = torch.from_numpy(question_embeddings)
 
     # Find closest embeddings for each query (using cosine distance)
     min_indices = get_neighbours(question_embeddings, query_embeddings, args.K)
