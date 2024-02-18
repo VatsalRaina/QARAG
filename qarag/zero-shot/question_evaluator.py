@@ -23,7 +23,7 @@ def get_neighbours(Z, B, K):
     cosine_distance = cosine_distance.detach().cpu()
     cosine_similarity = cosine_similarity.detach().cpu()
 
-    _, min_indices = torch.topk(cosine_distance, K, 1, False, True)
+    _, min_indices = torch.topk(cosine_distance, K, 1, False)
 
     return min_indices.numpy()
 
