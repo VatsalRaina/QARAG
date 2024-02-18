@@ -23,7 +23,7 @@ def get_neighbours(Z, B, K):
     cosine_distance = cosine_distance.detach().cpu()
     cosine_similarity = cosine_similarity.detach().cpu()
 
-    _, min_indices = torch.topk(cosine_distance, K, 1, False)
+    _, min_indices = torch.topk(cosine_distance, K, 1, False, True)
 
     return min_indices.numpy()
 
@@ -42,6 +42,8 @@ def main(args):
 
     if args.qu_count > 1:
         for count in range(2, args.qu_count+1):
+            print(question_embeddings.shape)
+            print(qu_idx_to_chunk_idx.shape)
             curr_qu_embs = torch.from_numpy(np.load(args.data_dir + 'questions_' + str(count) + '_' + args.embedder + '.npy'))
             temp_qu_idx_to_chunk_idx = np.concatenate([qu_idx_to_chunk_idx, np.arange(len(labels))])
             qu_idx_to_chunk_idx = temp_qu_idx_to_chunk_idx
