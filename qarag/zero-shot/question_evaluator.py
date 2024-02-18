@@ -43,7 +43,8 @@ def main(args):
     if args.qu_count > 1:
         for count in range(2, args.qu_count+1):
             curr_qu_embs = torch.from_numpy(np.load(args.data_dir + 'questions_' + str(count) + '_' + args.embedder + '.npy'))
-            qu_idx_to_chunk_idx = np.concatenate([qu_idx_to_chunk_idx, np.arange(len(labels))])
+            temp_qu_idx_to_chunk_idx = np.concatenate([qu_idx_to_chunk_idx, np.arange(len(labels))])
+            qu_idx_to_chunk_idx = temp_qu_idx_to_chunk_idx
             temp_embeddings = np.concatenate([question_embeddings, curr_qu_embs], axis=0)
             question_embeddings = temp_embeddings
     question_embeddings = torch.from_numpy(question_embeddings)
