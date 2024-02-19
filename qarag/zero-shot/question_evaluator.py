@@ -58,7 +58,7 @@ def main(args):
     hits = 0
     for count, label in enumerate(labels):
         curr_chunk_idxs = pd.unique(chunk_indices[count])[:args.K]
-        print(curr_chunk_idxs)
+        print(chunk_indices[count])
         if label in curr_chunk_idxs: hits += 1
     print("Recall at ", args.K)
     print(hits/len(labels))
