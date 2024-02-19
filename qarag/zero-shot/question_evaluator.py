@@ -37,15 +37,16 @@ def main(args):
     query_embeddings = np.load(args.data_dir + 'queries_' + args.embedder + '.npy')
     query_embeddings = torch.from_numpy(query_embeddings)
 
+    with open(args.data_dir + 'chunks.json', 'r') as f:
+        chunks = json.load(f)
+
     question_embeddings = np.load(args.data_dir + 'questions_' + args.embedder + '.npy')
-    qu_idx_to_chunk_idx = np.arange(len(labels))
+    qu_idx_to_chunk_idx = np.arange(len(chunks))
 
     if args.qu_count > 1:
         for count in range(2, args.qu_count+1):
-            print(question_embeddings.shape)
-            print(qu_idx_to_chunk_idx.shape)
             curr_qu_embs = torch.from_numpy(np.load(args.data_dir + 'questions_' + str(count) + '_' + args.embedder + '.npy'))
-            temp_qu_idx_to_chunk_idx = np.concatenate([qu_idx_to_chunk_idx, np.arange(len(labels))])
+            temp_qu_idx_to_chunk_idx = np.concatenate([qu_idx_to_chunk_idx, np.arange(len(chunks))])
             qu_idx_to_chunk_idx = temp_qu_idx_to_chunk_idx
             temp_embeddings = np.concatenate([question_embeddings, curr_qu_embs], axis=0)
             question_embeddings = temp_embeddings
@@ -58,7 +59,6 @@ def main(args):
     hits = 0
     for count, label in enumerate(labels):
         curr_chunk_idxs = pd.unique(chunk_indices[count])[:args.K]
-        print(curr_chunk_idxs)
         if label in curr_chunk_idxs: hits += 1
     print("Recall at ", args.K)
     print(hits/len(labels))
