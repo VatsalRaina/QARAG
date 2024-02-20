@@ -7,7 +7,6 @@ import numpy as np
 parser = argparse.ArgumentParser(description='Get all command line arguments.')
 parser.add_argument('--data_dir', type=str, default='', help='Specify the path to the data directory.')
 parser.add_argument('--embedder', type=str, default="sentence-t5-base", help='Specify the path to the data directory.')
-parser.add_argument('--qu_count', type=int, default=1, help='The number of questions per chunk.')
 
 
 def main(args):
