@@ -23,6 +23,7 @@ def main(args):
         curr_idxs = [count] * len(question_set)
         qu_idx_to_chunk_idx.extend(curr_idxs)
 
+    print(len(unwrapped_questions))
     question_embeddings = np.asarray(model.encode(unwrapped_questions))
     with open(args.data_dir + 'questions_aware_' + args.embedder + '.npy', 'wb') as f:
         np.save(f, question_embeddings)
