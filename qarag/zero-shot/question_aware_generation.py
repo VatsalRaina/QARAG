@@ -28,6 +28,7 @@ def main(args):
     model = "gpt-3.5-turbo"
 
     batch_examples = []
+    timeout_secs = 10
     for count, chunk in enumerate(chunks):
         if count < start_point: continue
         print(count)
@@ -37,7 +38,7 @@ def main(args):
         # generate question for each sentence
         for sentence in sentences:
             prompt = "Generate a single closed-answer question using:\n" + chunk + "\nThe answer should be present in the sentence:\n" + sentence
-            response = openai.ChatCompletion.create(model=model, messages=[{"role": "user", "content": prompt}])
+            response = openai.ChatCompletion.create(model=model, messages=[{"role": "user", "content": prompt}], request_timeout=timeout_secs)
             generated_text = response.choices[0].message.content.strip()
             chunk_questions.append(generated_text)
         batch_examples.append(chunk_questions)
