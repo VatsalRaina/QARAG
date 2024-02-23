@@ -54,7 +54,7 @@ def main(args):
 
 if __name__ == "__main__":
     args = parser.parse_args()
-    for count in range(1,100):
+    for count in range(1,500):
         try:
             main(args)
             time.sleep(0.1)
