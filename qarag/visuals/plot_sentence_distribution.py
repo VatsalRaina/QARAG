@@ -20,7 +20,7 @@ def main(args):
         sentence_counts.append(len(sentences))
     sentence_counts = np.asarray(sentence_counts)
 
-    sns.boxplot(sentence_counts)
+    sns.boxplot(sentence_counts, whis=(0, 100), orient="h")
     plt.xlabel('Sentences per chunk')
     plt.savefig(args.save_path)
 
