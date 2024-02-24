@@ -11,6 +11,8 @@ parser.add_argument('--save_path', type=str, default='', help='Specify the path 
 
 def main(args):
 
+    sns.set_style("darkgrid")
+
     with open(args.data_dir + 'chunks.json', 'r') as f:
         chunks = json.load(f)
 
@@ -20,7 +22,7 @@ def main(args):
         sentence_counts.append(len(sentences))
     sentence_counts = np.asarray(sentence_counts)
 
-    sns.boxplot(sentence_counts, whis=(0, 100), orient="h")
+    sns.boxplot(sentence_counts, whis=(0, 100), fill=False, orient="h", width=.5)
     plt.xlabel('Sentences per chunk')
     plt.savefig(args.save_path)
 
