@@ -24,7 +24,7 @@ def main(args):
 
     sns.lineplot(
         data=df,
-        x="Questions", y="Recall", hue="Metric", style="event",
+        x="Questions", y="Recall", hue="Metric", style="Metric",
         markers=True, dashes=False
     )
     plt.savefig(args.save_path)
