@@ -55,11 +55,11 @@ def main(args):
     SAMPLES = 10
     for i in range(SAMPLES):
         print("SAMPLE NO:", i+1)
-        pos = random.randint((0,MAX-1))
+        pos = random.randint(0,MAX-1)
         question_embeddings = all_question_embeddings[pos]
         if args.qu_count > 1:
             for j in range(args.qu_count-1):
-                pos = random.randint((0,MAX-1))
+                pos = random.randint(0,MAX-1)
                 curr_question_embeddings = all_question_embeddings[pos]
                 question_embeddings = np.concatenate([question_embeddings, curr_question_embeddings], axis=0)
 
