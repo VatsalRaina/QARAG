@@ -77,7 +77,7 @@ def main(args):
         print(hits/len(labels))
         print("-----------------------")
         scores.append(hits/len(labels))
-    scores = np.asarray(scores)
+
     with open(args.save_dir + str(args.qu_count) + "_K" + str(args.K) + ".json", 'w') as f:
         json.dump(scores, f)
 
