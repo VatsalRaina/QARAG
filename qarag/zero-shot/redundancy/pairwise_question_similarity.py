@@ -38,8 +38,6 @@ def main(args):
         cosine_distances = 1 - np.dot(arr_normalized, arr_normalized.T)
         # Extract cosine distances from the upper triangle (excluding diagonal)
         upper_triangle_distances = cosine_distances[np.triu_indices(MAX, k=1)]
-        print(len(upper_triangle_distances), type(upper_triangle_distances))
-        break
         all_cosine_distances += upper_triangle_distances.tolist()
         mean_sentence_cosine.append(np.mean(upper_triangle_distances))
 
@@ -47,14 +45,14 @@ def main(args):
     # all_cosine_matrices = np.asarray(all_cosine_matrices)
     # np.save(args.save_path, all_cosine_matrices)
 
-    sns.histplot(all_cosine_distances, kde=False, density=True)
+    sns.histplot(all_cosine_distances, kde=False, stat="density")
     plt.xlabel('Pairwise question cosine similarity')
     plt.ylabel('Normalized Frequency')
     plt.savefig(args.save_dir + 'question_similarity.png')
 
     plt.clf()
 
-    sns.histplot(mean_sentence_cosine, kde=False, density=True)
+    sns.histplot(mean_sentence_cosine, kde=False, stat="density")
     plt.xlabel('Mean pairwise question cosine similarity per sentence')
     plt.ylabel('Normalized Frequency')
     plt.savefig(args.save_dir + 'mean_question_similarity.png')
