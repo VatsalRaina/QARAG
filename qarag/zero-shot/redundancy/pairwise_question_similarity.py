@@ -1,5 +1,7 @@
 import argparse
 import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 parser = argparse.ArgumentParser(description='Get all command line arguments.')
 parser.add_argument('--data_dir', type=str, default='', help='Specify the path to the data directory.')
@@ -22,8 +24,8 @@ def main(args):
     all_question_embeddings = np.asarray(all_question_embeddings)
     all_question_embeddings = all_question_embeddings.transpose(1, 0, 2)    # Now [num_sentences, 15, emb_dim]
 
-    # mean_sentence_cosine = []
-    # all_cosine_distances = []
+    mean_sentence_cosine = []
+    all_cosine_distances = []
     all_cosine_matrices = []
 
     # So for each set of 15 embeddings, I will make 15C2 = 105 pairwise comparisons
@@ -35,13 +37,25 @@ def main(args):
         # Calculate cosine similarity using matrix multiplication
         cosine_distances = 1 - np.dot(arr_normalized, arr_normalized.T)
         # Extract cosine distances from the upper triangle (excluding diagonal)
-        # upper_triangle_distances = cosine_distances[np.triu_indices(MAX, k=1)]
-        # all_cosine_distances.append(upper_triangle_distances)
-        # mean_sentence_cosine.append(np.mean(upper_triangle_distances))
+        upper_triangle_distances = cosine_distances[np.triu_indices(MAX, k=1)]
+        all_cosine_distances += upper_triangle_distances.tolist()
+        mean_sentence_cosine.append(np.mean(upper_triangle_distances))
 
         all_cosine_matrices.append( all_cosine_matrices )
-    all_cosine_matrices = np.asarray(all_cosine_matrices)
-    np.save(args.save_path, all_cosine_matrices)
+    # all_cosine_matrices = np.asarray(all_cosine_matrices)
+    # np.save(args.save_path, all_cosine_matrices)
+
+    sns.histplot(all_cosine_distances, kde=False, density=True)
+    plt.xlabel('Pairwise question cosine similarity')
+    plt.ylabel('Normalized Frequency')
+    plt.savefig(args.save_dir + 'question_similarity.png')
+
+    plt.clf()
+
+    sns.histplot(all_cosine_distances, kde=False, density=True)
+    plt.xlabel('Mean pairwise question cosine similarity per sentence')
+    plt.ylabel('Normalized Frequency')
+    plt.savefig(args.save_dir + 'question_similarity.png')
 
 
 if __name__ == "__main__":
