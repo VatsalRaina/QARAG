@@ -45,14 +45,14 @@ def main(args):
     # all_cosine_matrices = np.asarray(all_cosine_matrices)
     # np.save(args.save_path, all_cosine_matrices)
 
-    sns.histplot(all_cosine_similarities, kde=False, stat="density")
+    sns.histplot(all_cosine_similarities, kde=False, stat="density", common_norm=False)
     plt.xlabel('Pairwise question cosine similarity')
     plt.ylabel('Normalized Frequency')
     plt.savefig(args.save_dir + 'question_similarity.png')
 
     plt.clf()
 
-    sns.histplot(mean_sentence_cosine, kde=False, stat="density")
+    sns.histplot(mean_sentence_cosine, kde=False, stat="density", common_norm=False)
     plt.xlabel('Mean pairwise question cosine similarity per sentence')
     plt.ylabel('Normalized Frequency')
     plt.savefig(args.save_dir + 'mean_question_similarity.png')
