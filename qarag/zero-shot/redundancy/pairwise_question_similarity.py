@@ -55,7 +55,7 @@ def main(args):
     sns.histplot(all_cosine_distances, kde=False, density=True)
     plt.xlabel('Mean pairwise question cosine similarity per sentence')
     plt.ylabel('Normalized Frequency')
-    plt.savefig(args.save_dir + 'question_similarity.png')
+    plt.savefig(args.save_dir + 'mean_question_similarity.png')
 
 
 if __name__ == "__main__":
