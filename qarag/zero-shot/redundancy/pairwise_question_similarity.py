@@ -7,7 +7,7 @@ parser = argparse.ArgumentParser(description='Get all command line arguments.')
 parser.add_argument('--data_dir', type=str, default='', help='Specify the path to the data directory.')
 parser.add_argument('--embedder', type=str, default="sentence-t5-base", help='Specify the model name used to search for correct files.')
 parser.add_argument('--qu_count', type=int, default=1, help='Specify the path to the data directory.')
-parser.add_argument('--save_path', type=str, default='', help='Path to save all cosine distance matrices.')
+parser.add_argument('--save_dir', type=str, default='', help='Path to save all cosine distance matrices.')
 
 
 def main(args):
