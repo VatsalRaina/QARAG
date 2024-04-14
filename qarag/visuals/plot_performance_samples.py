@@ -1,3 +1,5 @@
+# THERE IS A BETTER SCRIPT WRITTEN DIRECTLY ON THE HPC IN ./out/
+
 import argparse
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -36,11 +38,7 @@ def main(args):
         }
     df = pd.DataFrame.from_dict(data)
 
-    sns.lineplot(
-        data=df,
-        x="Questions", y="Recall", hue="Metric", style="Metric",
-        markers=True, dashes=False
-    )
+    sns.pointplot(data=df, x="Questions", y="Recall", errorbar="sd", hue="Metric")
     plt.savefig(args.save_path)
 
 if __name__ == "__main__":
