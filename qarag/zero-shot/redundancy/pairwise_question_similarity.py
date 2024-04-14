@@ -25,7 +25,7 @@ def main(args):
     all_question_embeddings = all_question_embeddings.transpose(1, 0, 2)    # Now [num_sentences, 15, emb_dim]
 
     mean_sentence_cosine = []
-    all_cosine_distances = []
+    all_cosine_similarities = []
     all_cosine_matrices = []
 
     # So for each set of 15 embeddings, I will make 15C2 = 105 pairwise comparisons
@@ -35,17 +35,17 @@ def main(args):
         # Normalize each row
         arr_normalized = arr / np.linalg.norm(arr, axis=1)[:, np.newaxis]
         # Calculate cosine similarity using matrix multiplication
-        cosine_distances = 1 - np.dot(arr_normalized, arr_normalized.T)
-        # Extract cosine distances from the upper triangle (excluding diagonal)
-        upper_triangle_distances = cosine_distances[np.triu_indices(MAX, k=1)]
-        all_cosine_distances += upper_triangle_distances.tolist()
-        mean_sentence_cosine.append(np.mean(upper_triangle_distances))
+        cosine_similarities = np.dot(arr_normalized, arr_normalized.T)
+        # Extract cosine similarities from the upper triangle (excluding diagonal)
+        upper_triangle_similarities = cosine_similarities[np.triu_indices(MAX, k=1)]
+        all_cosine_similarities += upper_triangle_similarities.tolist()
+        mean_sentence_cosine.append(np.mean(upper_triangle_similarities))
 
         all_cosine_matrices.append( all_cosine_matrices )
     # all_cosine_matrices = np.asarray(all_cosine_matrices)
     # np.save(args.save_path, all_cosine_matrices)
 
-    sns.histplot(all_cosine_distances, kde=False, stat="density")
+    sns.histplot(all_cosine_similarities, kde=False, stat="density")
     plt.xlabel('Pairwise question cosine similarity')
     plt.ylabel('Normalized Frequency')
     plt.savefig(args.save_dir + 'question_similarity.png')
