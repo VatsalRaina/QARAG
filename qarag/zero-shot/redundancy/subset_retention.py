@@ -36,7 +36,7 @@ def select_subset(matrix, tau):
         matrix[max_count_index, :] = 0
         matrix[:, max_count_index] = 0
 
-    return selected_indices
+    return np.array(list(selected_indices))
 
 
 def get_neighbours(Z, B, K):
