@@ -92,7 +92,7 @@ def main(args):
         # Calculate cosine similarity using matrix multiplication
         cosine_similarities = np.dot(arr_normalized, arr_normalized.T)
         idxs = select_subset(cosine_similarities, tau)
-        retained_qu_idx_to_chunk_idx = qu_idx_to_chunk_idx[idxs]
+        retained_qu_idx_to_chunk_idx = np.asarray( [ qu_idx_to_chunk_idx[i] ] * len(idxs) )
         retained_question_embeddings = arr[idxs]
 
         if i==0:
