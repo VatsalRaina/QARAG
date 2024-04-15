@@ -126,7 +126,7 @@ def main(args):
         out['num_questions'].append(len(efficient_question_embeddings))
         out['recalls'].append(hits/len(labels))
 
-    with open(args.save_dir + 'recall_' + args.K + '.json') as f:
+    with open(args.save_dir + 'K_' + str(args.K) + '.json') as f:
         json.dump(out, f)
 
 
