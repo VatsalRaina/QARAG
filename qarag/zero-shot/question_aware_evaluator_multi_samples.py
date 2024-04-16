@@ -57,7 +57,7 @@ def main(args):
         print("SAMPLE NO:", i+1)
         positions = random.sample(range(MAX), args.qu_count)
         for pos_count, pos in enumerate(positions):
-            if pos_count == 1: question_embeddings = all_question_embeddings[pos]
+            if pos_count == 0: question_embeddings = all_question_embeddings[pos]
             else:
                 curr_question_embeddings = all_question_embeddings[pos]
                 question_embeddings = np.concatenate([question_embeddings, curr_question_embeddings], axis=0)
