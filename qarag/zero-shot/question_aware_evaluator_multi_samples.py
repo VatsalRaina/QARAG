@@ -55,14 +55,12 @@ def main(args):
     SAMPLES = 10
     for i in range(SAMPLES):
         print("SAMPLE NO:", i+1)
-        pos = random.randint(0,MAX-1)
-        question_embeddings = all_question_embeddings[pos]
-        if args.qu_count > 1:
-            for j in range(args.qu_count-1):
-                pos = random.randint(0,MAX-1)
+        positions = random.sample(range(MAX), args.qu_count)
+        for pos_count, pos in enumerate(positions):
+            if pos_count == 1: question_embeddings = all_question_embeddings[pos]
+            else:
                 curr_question_embeddings = all_question_embeddings[pos]
                 question_embeddings = np.concatenate([question_embeddings, curr_question_embeddings], axis=0)
-
         question_embeddings = torch.from_numpy(question_embeddings)
 
         # Find closest embeddings for each query (using cosine distance)
