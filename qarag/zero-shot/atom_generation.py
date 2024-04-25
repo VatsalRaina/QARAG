@@ -5,6 +5,7 @@ This file breaksdown a chunk of text into a set of atomic facts.
 import json
 import argparse
 import openai
+import time
 
 parser = argparse.ArgumentParser(description='Get all command line arguments.')
 parser.add_argument('--data_dir', type=str, default='', help='Specify the path to the data directory.')
@@ -37,3 +38,27 @@ def main(args):
             json.dump(atoms, f)
         print("Saved up to:", count)
         print("----------------------")
+
+
+if __name__ == "__main__":
+    args = parser.parse_args()
+    for count in range(1,100):
+        try:
+            main(args)
+            time.sleep(0.1)
+        except openai.error.RateLimitError:
+            print("openai.error.RateLimitError... #{}".format(count))
+            print("restart in 10 seconds")
+            time.sleep(10)
+        except openai.error.ServiceUnavailableError:
+            print("openai.error.ServiceUnavailableError... #{}".format(count))
+            print("restart in 10 seconds")
+            time.sleep(10)
+        except openai.error.APIError:
+            print("openai.error.APIError... #{}".format(count))
+            print("restart in 20 seconds")
+            time.sleep(20)
+        except openai.error.Timeout:
+            print("openai.error.TimeoutError... #{}".format(count))
+            print("restart in 20 seconds")
+            time.sleep(20)
