@@ -29,7 +29,7 @@ def main(args):
     
 
     atom_embeddings = np.asarray(model.encode(all_atoms))
-    with open(args.data_dir + 'atoms_granular' + args.embedder + '.npy', 'wb') as f:
+    with open(args.data_dir + 'atoms_granular_' + args.embedder + '.npy', 'wb') as f:
         np.save(f, atom_embeddings)
 
     print("Finished embedding atoms.")
