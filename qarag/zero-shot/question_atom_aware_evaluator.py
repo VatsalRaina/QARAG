@@ -35,7 +35,7 @@ def main(args):
 
     query_embeddings = np.load(args.data_dir + 'queries_' + args.embedder + '.npy')
     query_embeddings = torch.from_numpy(query_embeddings)
-    question_embeddings = np.load(args.data_dir + 'questions_atom_aware_' + args.embedder + '.npy', 'wb')
+    question_embeddings = np.load(args.data_dir + 'questions_atom_aware_' + args.embedder + '.npy')
     atom_idx_to_chunk_idx = np.load(args.data_dir + 'atoms_mapping'+ '.npy')
 
     question_embeddings = torch.from_numpy(question_embeddings)
