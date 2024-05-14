@@ -5,6 +5,7 @@ import torch
 
 parser = argparse.ArgumentParser(description='Get all command line arguments.')
 parser.add_argument('--data_dir', type=str, default='', help='Specify the path to the data directory.')
+parser.add_argument('--expanded_queries', type=bool, default=False, help='Whether to use expanded queries.')
 parser.add_argument('--embedder', type=str, default="sentence-t5-base", help='Specify the model name used to search for correct files.')
 parser.add_argument('--K', type=int, default=1, help='Recall depth.')
 
@@ -38,7 +39,10 @@ def main(args):
     chunk_embeddings = torch.from_numpy(chunk_embeddings)
     # with open(args.data_dir + 'queries_' + args.embedder + '.npy', 'rb') as f:
     #     query_embeddings = np.load(f, allow_pickle=True)
-    query_embeddings = np.load(args.data_dir + 'queries_' + args.embedder + '.npy')
+    if args.expanded_queries:
+        query_embeddings = np.load(args.data_dir + 'expanded_queries_' + args.embedder + '.npy')
+    else:
+        query_embeddings = np.load(args.data_dir + 'queries_' + args.embedder + '.npy')
     query_embeddings = torch.from_numpy(query_embeddings)
 
     # Find closest embeddings for each query (using cosine distance)
