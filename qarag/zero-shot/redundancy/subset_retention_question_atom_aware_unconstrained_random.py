@@ -67,17 +67,16 @@ def main(args):
         'recalls': []
         }
 
-    # number of questions to consider
-    num_questions = [11985, 23915, 49781, 79975, 114059, 251895]
+    fracs = [0.048, 0.095, 0.198, 0.317, 0.453, 1.0]
 
-    for num in num_questions:
-        print("Num Questions:", num)
-        num_per_chunk = int( num / len(grouped_atomic_question_embeddings.keys()) )
+    for frac in fracs:
+        print("Frac:", frac)
         i = 0
         for chunk_idx, chunk_question_embeddings in grouped_atomic_question_embeddings.items():
             arr = np.concatenate( chunk_question_embeddings, axis=0 )
             values = np.arange(len(arr))
-            idxs = np.random.choice(values, num_per_chunk, replace=False)
+            num_samples = int( frac * len(values) )
+            idxs = np.random.choice(values, num_samples, replace=False)
             retained_qu_idx_to_chunk_idx = np.asarray( [ chunk_idx ] * len(idxs) )
             retained_question_embeddings = arr[idxs]
 
