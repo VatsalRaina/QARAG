@@ -13,7 +13,10 @@ parser.add_argument('--K', type=int, default=1, help='Recall depth.')
 
 
 def get_neighbours(Z, B, K):
-    B = B.T
+
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    Z = Z.to(device)
+    B = B.to(device).transpose(0, 1)
 
     Z_norm = torch.linalg.norm(Z, dim=1, keepdim=True)  # Size (n, 1).
     B_norm = torch.linalg.norm(B, dim=0, keepdim=True)  # Size (1, b).
