@@ -72,11 +72,12 @@ def main(args):
 
     for num in num_questions:
         print("Num Questions:", num)
+        num_per_chunk = int( num / len(grouped_atomic_question_embeddings.keys()) )
         i = 0
         for chunk_idx, chunk_question_embeddings in grouped_atomic_question_embeddings.items():
             arr = np.concatenate( chunk_question_embeddings, axis=0 )
             values = np.arange(len(arr))
-            idxs = np.random.choice(values, num, replace=False)
+            idxs = np.random.choice(values, num_per_chunk, replace=False)
             retained_qu_idx_to_chunk_idx = np.asarray( [ chunk_idx ] * len(idxs) )
             retained_question_embeddings = arr[idxs]
 
