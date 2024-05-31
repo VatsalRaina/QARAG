@@ -5,7 +5,6 @@ import argparse
 
 parser = argparse.ArgumentParser(description='Get all command line arguments.')
 parser.add_argument('--save_dir', type=str, default='', help='Specify the path to save the processed data.')
-parser.add_argument('--raw_data', type=str, default='', help='If required, path of raw data.')
 parser.add_argument('--split', type=str, default='validation', help='Split of data.')
 
 
@@ -30,13 +29,16 @@ def process_hotpotqa(save_dir):
     dataset = load_dataset("hotpot_qa", "fullwiki")['validation']
 
 
-def process_clapnq(raw_data, save_dir):
+def process_clapnq(save_dir):
     dataset = []
-    with open(raw_data, 'r') as f:
+    with open(save_dir + 'clapnq_dev_answerable.jsonl', 'r') as f:
         for l in f: dataset.append( json.loads(l.strip()) )
+    train_dataset = []
+    with open(save_dir + 'clapnq_train_answerable.jsonl', 'r') as f:
+        for l in f: train_dataset.append( json.loads(l.strip()) )
 
     unique_contexts = []
-    for ex in dataset:
+    for ex in dataset + train_dataset:
         if ex['passages'][0]['text'] not in unique_contexts: unique_contexts.append( ex['passages'][0]['text'] )
 
     simplified_data = []
@@ -58,7 +60,7 @@ def main(args):
     # process_squad(args.save_dir, args.split)
     # print("Finished processing SQuAD.")
 
-    process_clapnq(args.raw_data, args.save_dir)
+    process_clapnq(args.save_dir)
 
 
 if __name__ == "__main__":
