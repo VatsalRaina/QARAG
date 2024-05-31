@@ -41,6 +41,8 @@ def process_clapnq(save_dir):
     for ex in dataset + train_dataset:
         if ex['passages'][0]['text'] not in unique_contexts: unique_contexts.append( ex['passages'][0]['text'] )
 
+    print("Number of unique chunks:", len(unique_contexts))
+
     simplified_data = []
     for ex in dataset:
         curr = {'question': ex['input'], 'context_id': unique_contexts.index( ex['passages'][0]['text'] )}
