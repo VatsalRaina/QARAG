@@ -62,8 +62,11 @@ def process_pubmedqaL(save_dir):
         dataset_extra = json.load(f)
 
     unique_contexts = []
+    for ex in dataset.keys():
+        unique_contexts.append( ' '.join(dataset[ex]['CONTEXTS']) )
     for ex in dataset_extra.keys():
-        unique_contexts.append( ' '.join(dataset_extra[ex]['CONTEXTS']) )
+        ctxt = ' '.join(dataset_extra[ex]['CONTEXTS'])
+        if ctxt not in unique_contexts: unique_contexts.append(ctxt)
 
     simplified_data = []
     for ex in dataset.keys():
