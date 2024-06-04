@@ -56,15 +56,14 @@ def process_clapnq(save_dir):
     
 
 def process_pubmedqaL(save_dir):
-    dataset = []
     with open(save_dir + 'ori_pqal.json', 'r') as f:
         dataset = json.load(f)
 
     unique_contexts = []
     simplified_data = []
-    for count, ex in enumerate(dataset):
-        unique_contexts.append( ' '.join(ex['CONTEXTS']) )
-        curr = {'question': ex['QUESTION'], 'context_id': count }
+    for count, ex in enumerate(dataset.keys()):
+        unique_contexts.append( ' '.join(dataset[ex]['CONTEXTS']) )
+        curr = {'question': dataset[ex]['QUESTION'], 'context_id': count }
         simplified_data.append(curr)
 
     print("Number of unique chunks:", len(unique_contexts))
