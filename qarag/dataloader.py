@@ -55,6 +55,26 @@ def process_clapnq(save_dir):
         json.dump(simplified_data, f)
     
 
+def process_pubmedqaL(save_dir):
+    dataset = []
+    with open(save_dir + 'ori_pqal.json', 'r') as f:
+        dataset = json.load(f)
+
+    unique_contexts = []
+    simplified_data = []
+    for count, ex in enumerate(dataset):
+        unique_contexts.append( ' '.join(ex['CONTEXTS']) )
+        curr = {'question': ex['QUESTION'], 'context_id': count }
+        simplified_data.append(curr)
+
+    print("Number of unique chunks:", len(unique_contexts))
+
+    with open(save_dir + 'chunks.json', 'w') as f:
+        json.dump(unique_contexts, f)
+
+    with open(save_dir + 'data.json', 'w') as f:
+        json.dump(simplified_data, f)    
+
 
 def main(args):
 
@@ -62,7 +82,9 @@ def main(args):
     # process_squad(args.save_dir, args.split)
     # print("Finished processing SQuAD.")
 
-    process_clapnq(args.save_dir)
+    #process_clapnq(args.save_dir)
+    process_pubmedqaL(args.save_dir)
+
 
 
 if __name__ == "__main__":
