@@ -63,7 +63,7 @@ def process_pubmedqaL(save_dir):
 
     unique_contexts = []
     for ex in dataset_extra.keys():
-        unique_contexts.append( ' '.join(dataset[ex]['CONTEXTS']) )
+        unique_contexts.append( ' '.join(dataset_extra[ex]['CONTEXTS']) )
 
     simplified_data = []
     for ex in dataset.keys():
