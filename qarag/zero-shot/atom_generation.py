@@ -28,7 +28,7 @@ def main(args):
     timeout_secs = 10
     for count, chunk in enumerate(chunks):
         if count < start_point: continue
-        print(count)
+        print(count, len(chunks))
         prompt = "Please breakdown the following paragraph into stand-alone atomic facts. Return each fact on a new line.\n" + chunk
         response = openai.ChatCompletion.create(model=model, messages=[{"role": "user", "content": prompt}], request_timeout=timeout_secs)
         generated_text = response.choices[0].message.content.strip()
