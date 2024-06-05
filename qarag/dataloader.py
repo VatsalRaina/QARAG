@@ -56,7 +56,7 @@ def process_clapnq(save_dir):
 
     simplified_data = []
     for qu, d_id in zip(questions, doc_ids):
-        curr = {'question': qu, 'context_id': passage_dict[d_id]}
+        curr = {'question': qu, 'context_id': unique_contexts.index(passage_dict[d_id])}
         simplified_data.append(curr)
 
     with open(save_dir + 'chunks.json', 'w') as f:
