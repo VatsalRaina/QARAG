@@ -50,7 +50,7 @@ def process_clapnq(save_dir):
     unique_contexts = passage_dict.values()
     print("Number of unique chunks:", len(unique_contexts))
 
-    df = pd.read_csv('question_dev_answerable.tsv', sep='\t')
+    df = pd.read_csv(save_dir + 'question_dev_answerable.tsv', sep='\t')
     questions = df['question'].tolist()
     doc_ids = df['doc-id-list'].tolist()
 
