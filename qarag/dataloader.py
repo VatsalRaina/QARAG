@@ -1,6 +1,7 @@
 
 from datasets import load_dataset
 import json
+import pandas as pd
 import argparse
 
 parser = argparse.ArgumentParser(description='Get all command line arguments.')
@@ -30,22 +31,32 @@ def process_hotpotqa(save_dir):
 
 
 def process_clapnq(save_dir):
-    dataset = []
-    with open(save_dir + 'clapnq_dev_answerable.jsonl', 'r') as f:
-        for l in f: dataset.append( json.loads(l.strip()) )
-    train_dataset = []
-    with open(save_dir + 'clapnq_train_answerable.jsonl', 'r') as f:
-        for l in f: train_dataset.append( json.loads(l.strip()) )
+    
+    with open(save_dir + 'passages.tex', 'r') as f:
+        passage_data = f.readlines()
 
-    unique_contexts = []
-    for ex in dataset + train_dataset:
-        if ex['passages'][0]['text'] not in unique_contexts: unique_contexts.append( ex['passages'][0]['text'] )
+    # Initialize an empty dictionary
+    passage_dict = {}
+    # Iterate over each element in the list
+    for passage in passage_data:
+        # Split the string by the tab character
+        parts = passage.split('\t')
+        if len(parts) >= 2:  # Ensure there are at least two parts after splitting
+            passage_id = parts[0]
+            context = parts[1]
+            # Add the ID and context to the dictionary
+            passage_dict[passage_id] = context
 
+    unique_contexts = passage_dict.values()
     print("Number of unique chunks:", len(unique_contexts))
 
+    df = pd.read_csv('question_dev_answerable.tsv', sep='\t')
+    questions = df['question'].tolist()
+    doc_ids = df['doc-id-list'].tolist()
+
     simplified_data = []
-    for ex in dataset:
-        curr = {'question': ex['input'], 'context_id': unique_contexts.index( ex['passages'][0]['text'] )}
+    for qu, d_id in zip(questions, doc_ids):
+        curr = {'question': qu, 'context_id': passage_dict[d_id]}
         simplified_data.append(curr)
 
     with open(save_dir + 'chunks.json', 'w') as f:
