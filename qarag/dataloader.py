@@ -99,8 +99,8 @@ def main(args):
     # process_squad(args.save_dir, args.split)
     # print("Finished processing SQuAD.")
 
-    #process_clapnq(args.save_dir)
-    process_pubmedqaL(args.save_dir)
+    process_clapnq(args.save_dir)
+    #process_pubmedqaL(args.save_dir)
 
 
 
