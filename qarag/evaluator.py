@@ -1,6 +1,7 @@
 import json
 import argparse
 import numpy as np
+import math
 import torch
 
 parser = argparse.ArgumentParser(description='Get all command line arguments.')
@@ -52,10 +53,16 @@ def main(args):
     #print(min_indices.shape)
 
     hits = 0
+    tot_ndcg = 0
     for count, label in enumerate(labels):
-        if label in min_indices[count]: hits += 1
+        if label in min_indices[count]: 
+            hits += 1
+            pos = min_indices[count].index()
+            tot_ndcg += 1 / math.log2(pos + 1)
     print("Recall at ", args.K)
     print(hits/len(labels))
+    print("nDCG at ", args.K)
+    print(tot_ndcg/len(labels))
 
 if __name__ == "__main__":
     args = parser.parse_args()
