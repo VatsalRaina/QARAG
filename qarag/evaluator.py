@@ -57,7 +57,7 @@ def main(args):
     for count, label in enumerate(labels):
         if label in min_indices[count]: 
             hits += 1
-            pos = min_indices[count].index()
+            pos = min_indices[count].tolist().index()
             tot_ndcg += 1 / math.log2(pos + 1)
     print("Recall at ", args.K)
     print(hits/len(labels))
