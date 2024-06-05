@@ -47,7 +47,7 @@ def process_clapnq(save_dir):
             # Add the ID and context to the dictionary
             passage_dict[passage_id] = context
 
-    unique_contexts = passage_dict.values()
+    unique_contexts = list(passage_dict.values())
     print("Number of unique chunks:", len(unique_contexts))
 
     df = pd.read_csv(save_dir + 'question_dev_answerable.tsv', sep='\t')
