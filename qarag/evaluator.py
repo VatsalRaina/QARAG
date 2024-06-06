@@ -57,7 +57,7 @@ def main(args):
     print("Number of unique chunks retrieved:", unique_min_indices.size)
 
     if args.write == 1:
-        np.save(args.save_dir + 'unique_elements.npy', unique_min_indices)
+        np.save(args.data_dir + 'sub_chunk_indices.npy', unique_min_indices)
 
     hits = 0
     tot_ndcg = 0
