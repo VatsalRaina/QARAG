@@ -86,8 +86,6 @@ def process_sub_clapnq(clapnq_dir, save_dir):
 
     with open(save_dir + 'data.json', 'w') as f:
         json.dump(sub_data, f)
-
-
     
 
 def process_pubmedqaL(save_dir):
@@ -117,6 +115,26 @@ def process_pubmedqaL(save_dir):
         json.dump(simplified_data, f)    
 
 
+def process_sub_pubmedqa(pubmedqa_dir, save_dir):
+    
+    with open(pubmedqa_dir + 'chunks.json', 'r') as f:
+        chunks = json.load(f)
+    with open(pubmedqa_dir + 'data.json', 'r') as f:
+        data = json.load(f)
+    sub_chunk_indices = np.load(pubmedqa_dir + 'sub_chunk_indices.npy', 'r').tolist()
+
+    sub_chunks = [chunks[idx] for idx in sub_chunk_indices]
+    sub_data = []
+    for ex in data:
+        alt_ex = {'question': ex['question'], 'context_id': sub_chunk_indices.index(ex['context_id'])}
+        sub_data.append(alt_ex)
+    
+    with open(save_dir + 'chunks.json', 'w') as f:
+        json.dump(sub_chunks, f)
+
+    with open(save_dir + 'data.json', 'w') as f:
+        json.dump(sub_data, f)
+
 def main(args):
 
     # print("Started processing SQuAD.")
@@ -124,9 +142,9 @@ def main(args):
     # print("Finished processing SQuAD.")
 
     #process_clapnq(args.save_dir)
-    process_sub_clapnq(args.extra_dir, args.save_dir)
+    #process_sub_clapnq(args.extra_dir, args.save_dir)
     #process_pubmedqaL(args.save_dir)
-
+    process_sub_pubmedqa(args.extra_dir, args.save_dir)
 
 
 if __name__ == "__main__":
