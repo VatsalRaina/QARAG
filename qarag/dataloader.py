@@ -2,10 +2,12 @@
 from datasets import load_dataset
 import json
 import pandas as pd
+import numpy as np
 import argparse
 
 parser = argparse.ArgumentParser(description='Get all command line arguments.')
 parser.add_argument('--save_dir', type=str, default='', help='Specify the path to save the processed data.')
+parser.add_argument('--extra_dir', type=str, default='', help='Specify the path to save the processed data.')
 parser.add_argument('--split', type=str, default='validation', help='Split of data.')
 
 
@@ -64,6 +66,28 @@ def process_clapnq(save_dir):
 
     with open(save_dir + 'data.json', 'w') as f:
         json.dump(simplified_data, f)
+
+def process_sub_clapnq(clapnq_dir, save_dir):
+    
+    with open(clapnq_dir + 'chunks.json', 'r') as f:
+        chunks = json.load(f)
+    with open(clapnq_dir + 'data.json', 'r') as f:
+        data = json.load(f)
+    sub_chunk_indices = np.load(clapnq_dir + 'sub_chunk_indices.npy', 'r').tolist()
+
+    sub_chunks = [chunks[idx] for idx in sub_chunk_indices]
+    sub_data = []
+    for ex in data:
+        alt_ex = {'question': ex['question'], 'context_id': sub_chunk_indices.index(ex['context_id'])}
+        sub_data.append(alt_ex)
+    
+    with open(save_dir + 'chunks.json', 'w') as f:
+        json.dump(sub_chunks, f)
+
+    with open(save_dir + 'data.json', 'w') as f:
+        json.dump(sub_data, f)
+
+
     
 
 def process_pubmedqaL(save_dir):
@@ -99,7 +123,8 @@ def main(args):
     # process_squad(args.save_dir, args.split)
     # print("Finished processing SQuAD.")
 
-    process_clapnq(args.save_dir)
+    #process_clapnq(args.save_dir)
+    process_sub_clapnq(args.extra_dir, args.save_dir)
     #process_pubmedqaL(args.save_dir)
 
 
