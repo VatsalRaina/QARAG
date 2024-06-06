@@ -53,7 +53,7 @@ def main(args):
     min_indices = get_neighbours(chunk_embeddings, query_embeddings, args.K)
     #print(min_indices.shape)
 
-    unique_min_indices = np.unique(min_indices)
+    unique_min_indices = np.unique( np.concatenate( (np.unique(min_indices), np.asarray(labels)) )) 
     print("Number of unique chunks retrieved:", unique_min_indices.size)
 
     if args.write == 1:
