@@ -52,6 +52,9 @@ def main(args):
     min_indices = get_neighbours(chunk_embeddings, query_embeddings, args.K)
     #print(min_indices.shape)
 
+    unique_min_indices = np.unique(min_indices)
+    print("Number of unique chunks retrieved:", unique_min_indices.size)
+
     hits = 0
     tot_ndcg = 0
     for count, label in enumerate(labels):
