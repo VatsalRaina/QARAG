@@ -8,6 +8,7 @@ parser = argparse.ArgumentParser(description='Get all command line arguments.')
 parser.add_argument('--data_dir', type=str, default='', help='Specify the path to the data directory.')
 parser.add_argument('--expanded_queries', type=bool, default=False, help='Whether to use expanded queries.')
 parser.add_argument('--embedder', type=str, default="sentence-t5-base", help='Specify the model name used to search for correct files.')
+parser.add_argument('--write', type=int, default=0, help='Whether to write retrieved chunk indices.')
 parser.add_argument('--K', type=int, default=1, help='Recall depth.')
 
 def get_neighbours(Z, B, K):
@@ -54,6 +55,9 @@ def main(args):
 
     unique_min_indices = np.unique(min_indices)
     print("Number of unique chunks retrieved:", unique_min_indices.size)
+
+    if args.write == 1:
+        np.save(args.save_dir + 'unique_elements.npy', unique_min_indices)
 
     hits = 0
     tot_ndcg = 0
