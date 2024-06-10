@@ -16,10 +16,12 @@ def main(args):
         model = SentenceTransformer("intfloat/" + args.embedder)
     else:
         model = SentenceTransformer("sentence-transformers/" + args.embedder)
-        
+
     print("Started embedding questions.")
     with open(args.data_dir + 'expanded_queries.json', 'r') as f:
         questions = json.load(f)
+    if 'e5' in args.embedder:
+        questions = ['query: ' + qu for qu in questions]
     question_embeddings = np.asarray(model.encode(questions))
     with open(args.data_dir + 'expanded_queries_' + args.embedder + '.npy', 'wb') as f:
         np.save(f, question_embeddings)
