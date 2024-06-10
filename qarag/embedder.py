@@ -25,7 +25,7 @@ def main(args):
     with open(args.data_dir + 'chunks.json', 'r') as f:
         chunks = json.load(f)
     if 'e5' in args.embedder:
-        chunks = ['passage: ' + ch for ch in queries]
+        chunks = ['passage: ' + ch for ch in chunks]
     chunk_embeddings = np.asarray(model.encode(chunks))
     print(chunk_embeddings.shape)
     with open(args.data_dir + 'chunks_' + args.embedder + '.npy', 'wb') as f:
