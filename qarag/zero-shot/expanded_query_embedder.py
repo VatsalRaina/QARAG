@@ -12,8 +12,11 @@ parser.add_argument('--qu_count', type=int, default=1, help='The number of quest
 
 def main(args):
 
-    model = SentenceTransformer("sentence-transformers/" + args.embedder)
-
+    if 'e5' in args.embedder:
+        model = SentenceTransformer("intfloat/" + args.embedder)
+    else:
+        model = SentenceTransformer("sentence-transformers/" + args.embedder)
+        
     print("Started embedding questions.")
     with open(args.data_dir + 'expanded_queries.json', 'r') as f:
         questions = json.load(f)

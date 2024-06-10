@@ -14,7 +14,10 @@ parser.add_argument('--is_local', type=str, default="no", help='Whether the embe
 def main(args):
 
     if args.is_local == 'no':
-        model = SentenceTransformer("sentence-transformers/" + args.embedder)
+        if 'e5' in args.embedder:
+            model = SentenceTransformer("intfloat/" + args.embedder)
+        else:
+            model = SentenceTransformer("sentence-transformers/" + args.embedder)
     else:
         model = SentenceTransformer("./" + args.embedder)
 
