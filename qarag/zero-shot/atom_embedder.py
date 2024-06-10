@@ -11,7 +11,10 @@ parser.add_argument('--embedder', type=str, default="sentence-t5-base", help='Sp
 
 def main(args):
 
-    model = SentenceTransformer("sentence-transformers/" + args.embedder)
+    if 'e5' in args.embedder:
+        model = SentenceTransformer("intfloat/" + args.embedder)
+    else:
+        model = SentenceTransformer("sentence-transformers/" + args.embedder)
 
     print("Started embedding atoms.")
 
@@ -27,6 +30,8 @@ def main(args):
 
     print("Total number of atoms:", len(all_atoms))
     
+    if 'e5' in args.embedder:
+        all_atoms = ['passage: ' + ch for ch in all_atoms]
 
     atom_embeddings = np.asarray(model.encode(all_atoms))
     with open(args.data_dir + 'atoms_' + args.embedder + '.npy', 'wb') as f:

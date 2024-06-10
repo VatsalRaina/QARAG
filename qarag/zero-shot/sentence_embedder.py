@@ -12,8 +12,10 @@ parser.add_argument('--qu_count', type=int, default=1, help='Specify the path to
 
 def main(args):
 
-    model = SentenceTransformer("sentence-transformers/" + args.embedder)
-
+    if 'e5' in args.embedder:
+        model = SentenceTransformer("intfloat/" + args.embedder)
+    else:
+        model = SentenceTransformer("sentence-transformers/" + args.embedder)
     print("Started embedding sentences.")
 
     with open(args.data_dir + 'chunks.json', 'r') as f:
@@ -29,6 +31,8 @@ def main(args):
 
     print("Total number of sentences:", len(all_sentences))
     
+    if 'e5' in args.embedder:
+        all_sentences = ['passage: ' + ch for ch in all_sentences]
 
     sentence_embeddings = np.asarray(model.encode(all_sentences))
     with open(args.data_dir + 'sentences_' + args.embedder + '.npy', 'wb') as f:
