@@ -12,8 +12,10 @@ parser.add_argument('--qu_count', type=int, default=1, help='Specify the path to
 
 def main(args):
 
-    model = SentenceTransformer("sentence-transformers/" + args.embedder)
-
+    if 'e5' in args.embedder:
+        model = SentenceTransformer("intfloat/" + args.embedder)
+    else:
+        model = SentenceTransformer("sentence-transformers/" + args.embedder)
     print("Started embedding atom aware questions.")
 
     if args.qu_count == 1:
@@ -26,7 +28,8 @@ def main(args):
             all_questions.extend(chunk_atoms)
 
         print("Total number of atom aware questions:", len(all_questions))
-        
+        if 'e5' in args.embedder:
+            all_questions = ['query: ' + ch for ch in all_questions]
         question_embeddings = np.asarray(model.encode(all_questions))
         with open(args.data_dir + 'questions_atom_aware_' + args.embedder + '.npy', 'wb') as f:
             np.save(f, question_embeddings)
@@ -39,7 +42,8 @@ def main(args):
         all_questions = []
         for chunk_atoms in all_chunks_atoms_questions:
             all_questions.extend(chunk_atoms)
-        
+        if 'e5' in args.embedder:
+            all_questions = ['query: ' + ch for ch in all_questions]
         question_embeddings = np.asarray(model.encode(all_questions))
         with open(args.data_dir + 'questions_atom_aware_' + str(args.qu_count) + '_' + args.embedder + '.npy', 'wb') as f:
             np.save(f, question_embeddings)
