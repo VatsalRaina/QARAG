@@ -12,7 +12,10 @@ parser.add_argument('--qu_count', type=int, default=1, help='Specify the path to
 
 def main(args):
 
-    model = SentenceTransformer("sentence-transformers/" + args.embedder)
+    if 'e5' in args.embedder:
+        model = SentenceTransformer("intfloat/" + args.embedder)
+    else:
+        model = SentenceTransformer("sentence-transformers/" + args.embedder)
 
     if args.qu_count == 1:
 
@@ -27,6 +30,8 @@ def main(args):
             qu_idx_to_chunk_idx.extend(curr_idxs)
 
         print(len(unwrapped_questions))
+        if 'e5' in args.embedder:
+            unwrapped_questions = ['query: ' + ch for ch in unwrapped_questions]
         question_embeddings = np.asarray(model.encode(unwrapped_questions))
         with open(args.data_dir + 'questions_aware_' + args.embedder + '.npy', 'wb') as f:
             np.save(f, question_embeddings)
@@ -40,6 +45,8 @@ def main(args):
         unwrapped_questions = []
         for count, question_set in enumerate(questions):
             unwrapped_questions.extend(question_set)
+        if 'e5' in args.embedder:
+            unwrapped_questions = ['query: ' + ch for ch in unwrapped_questions]
         question_embeddings = np.asarray(model.encode(unwrapped_questions))
         with open(args.data_dir + 'questions_aware_' + str(args.qu_count) + '_' + args.embedder + '.npy', 'wb') as f:
             np.save(f, question_embeddings)

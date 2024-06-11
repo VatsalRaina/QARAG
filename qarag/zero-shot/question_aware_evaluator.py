@@ -11,17 +11,19 @@ parser.add_argument('--qu_count', type=int, default=1, help='Specify the path to
 parser.add_argument('--K', type=int, default=1, help='Recall depth.')
 
 def get_neighbours(Z, B, K):
-    B = B.T
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    Z = Z.to(device)
+    B = B.to(device).transpose(0, 1)
 
-    Z_norm = torch.linalg.norm(Z, dim=1, keepdim=True)  # Size (n, 1).
-    B_norm = torch.linalg.norm(B, dim=0, keepdim=True)  # Size (1, b).
+    Z_norm = torch.linalg.norm(Z, dim=1, keepdim=True).to(device)  # Size (n, 1).
+    B_norm = torch.linalg.norm(B, dim=0, keepdim=True).to(device)  # Size (1, b).
 
     # Distance matrix of size (b, n).
-    cosine_similarity = ((Z @ B) / (Z_norm @ B_norm)).T
+    cosine_similarity = ((Z @ B) / (Z_norm @ B_norm)).transpose(0, 1)
     cosine_distance = 1 - cosine_similarity
 
-    cosine_distance = cosine_distance.detach().cpu()
-    cosine_similarity = cosine_similarity.detach().cpu()
+    cosine_distance = cosine_distance.cpu()
+    cosine_similarity = cosine_similarity.cpu()
 
     _, min_indices = torch.topk(cosine_distance, K, 1, False, True)
 
