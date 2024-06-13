@@ -52,8 +52,9 @@ def main(args):
     chunk_indices = atom_idx_to_chunk_idx[min_indices]
 
     hits = 0
+    print(labels)
+    print([ch[0] for ch in chunk_indices])
     for count, label in enumerate(labels):
-        print(chunk_indices[count][:15])
         curr_chunk_idxs = pd.unique(chunk_indices[count])[:args.K]
         if label in curr_chunk_idxs: hits += 1
         if len(pd.unique(chunk_indices[count])) < args.K: print(count, "Something is wrong")
