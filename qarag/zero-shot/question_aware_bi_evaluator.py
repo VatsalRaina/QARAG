@@ -47,7 +47,8 @@ def main(args):
             print(count, len(curr_question_embeddings))
             question_embeddings = np.concatenate([question_embeddings, curr_question_embeddings], axis=0)
         qu_idx_to_chunk_idx = np.tile(qu_idx_to_chunk_idx, args.qu_count)
-
+    print("Num mappings:", len(qu_idx_to_chunk_idx))
+    print(len(question_embeddings))
     question_embeddings = torch.from_numpy(question_embeddings)
 
     # Find closest embeddings for each query (using cosine distance)
