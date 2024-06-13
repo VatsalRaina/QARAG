@@ -13,7 +13,7 @@ parser.add_argument('--save_path', type=str, help='Load path to save results wit
 async def fetch_question(session, model, chunk, atom, timeout_secs):
     prompt = "Generate a single closed-answer question using:\n" + chunk + "\nThe answer should be present in:\n" + atom
     try:
-        response = await session.post(
+        async with session.post(
             'https://api.openai.com/v1/chat/completions',
             headers={
                 'Authorization': f'Bearer {openai.api_key}',
@@ -21,14 +21,12 @@ async def fetch_question(session, model, chunk, atom, timeout_secs):
             },
             json={
                 'model': model,
-                'messages': [{'role': 'user', 'content': prompt}],
-                'request_timeout': timeout_secs
-            }
-        )
-        result = await response.json()
-        print(result)
-        print(x)
-        return result['choices'][0]['message']['content'].strip()
+                'messages': [{'role': 'user', 'content': prompt}]
+            },
+            timeout=aiohttp.ClientTimeout(total=timeout_secs)
+        ) as response:
+            result = await response.json()
+            return result['choices'][0]['message']['content'].strip()
     except Exception as e:
         print(f"Error fetching question: {e}")
         return None
@@ -100,6 +98,7 @@ if __name__ == "__main__":
             print("openai.error.TimeoutError... #{}".format(count))
             print("restart in 20 seconds")
             time.sleep(20)
+
 
 
 # """
