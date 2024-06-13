@@ -39,24 +39,34 @@ def main(args):
     query_embeddings = torch.from_numpy(query_embeddings)
     question_embeddings = np.load(args.data_dir + 'questions_aware_' + args.embedder + '.npy')
     qu_idx_to_chunk_idx = np.load(args.data_dir + 'questions_aware_mapping'+ '.npy')
+    atom_idx_to_chunk_idx = np.load(args.data_dir + 'atoms_mapping'+ '.npy')
     
     TOT = 20
 
     for count in range(2, 16):
         curr_question_embeddings = np.load(args.data_dir + 'questions_aware_' + str(count) + '_' + args.embedder + '.npy')
         question_embeddings = np.concatenate([question_embeddings, curr_question_embeddings], axis=0)
-    
     curr_question_embeddings = np.load(args.data_dir + 'questions_aware_bi_' + args.embedder + '.npy')
     question_embeddings = np.concatenate([question_embeddings, curr_question_embeddings], axis=0)
     for count in range(2, 6):
         curr_question_embeddings = np.load(args.data_dir + 'questions_aware_bi_' + str(count) + '_' + args.embedder + '.npy')
         question_embeddings = np.concatenate([question_embeddings, curr_question_embeddings], axis=0)
-    
     qu_idx_to_chunk_idx = np.tile(qu_idx_to_chunk_idx, TOT)
+
+    TOT2 = 15
+    curr_question_embeddings = np.load(args.data_dir + 'questions_atom_aware_' + args.embedder + '.npy')
+    question_embeddings = np.concatenate([question_embeddings, curr_question_embeddings], axis=0)
+    for count in range(2, 16):
+        curr_question_embeddings = np.load(args.data_dir + 'questions_atom_aware_' + str(count) + '_' + args.embedder + '.npy')
+        question_embeddings = np.concatenate([question_embeddings, curr_question_embeddings], axis=0)
+    atom_idx_to_chunk_idx = np.tile(atom_idx_to_chunk_idx, TOT2)
+
+    qu_idx_to_chunk_idx = np.concatenate([qu_idx_to_chunk_idx, atom_idx_to_chunk_idx], axis=0)
+
     question_embeddings = torch.from_numpy(question_embeddings)
 
     # Find closest embeddings for each query (using cosine distance)
-    min_indices = get_neighbours(question_embeddings, query_embeddings, args.K * 15 * TOT)
+    min_indices = get_neighbours(question_embeddings, query_embeddings, args.K * 15 * (TOT+TOT2))
     chunk_indices = qu_idx_to_chunk_idx[min_indices]
 
     hits = 0
