@@ -31,7 +31,7 @@ def main(args):
 
         print(len(unwrapped_questions))
         if 'e5' in args.embedder:
-            unwrapped_questions = ['query: ' + ch for ch in unwrapped_questions]
+            unwrapped_questions = ['passage: ' + ch for ch in unwrapped_questions]
         question_embeddings = np.asarray(model.encode(unwrapped_questions))
         with open(args.data_dir + 'questions_aware_' + args.embedder + '.npy', 'wb') as f:
             np.save(f, question_embeddings)
@@ -46,7 +46,7 @@ def main(args):
         for count, question_set in enumerate(questions):
             unwrapped_questions.extend(question_set)
         if 'e5' in args.embedder:
-            unwrapped_questions = ['query: ' + ch for ch in unwrapped_questions]
+            unwrapped_questions = ['passage: ' + ch for ch in unwrapped_questions]
         question_embeddings = np.asarray(model.encode(unwrapped_questions))
         with open(args.data_dir + 'questions_aware_' + str(args.qu_count) + '_' + args.embedder + '.npy', 'wb') as f:
             np.save(f, question_embeddings)
