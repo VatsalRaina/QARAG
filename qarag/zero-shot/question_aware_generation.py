@@ -21,7 +21,9 @@ async def fetch_question(session, model, chunk, sentence, timeout_secs):
             },
             json={
                 'model': model,
-                'messages': [{'role': 'user', 'content': prompt}]
+                'messages': [{'role': 'user', 'content': prompt}],
+                "temperature": 0.7
+
             },
             timeout=aiohttp.ClientTimeout(total=timeout_secs)
         ) as response:
