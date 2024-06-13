@@ -26,6 +26,8 @@ async def fetch_question(session, model, chunk, atom, timeout_secs):
             }
         )
         result = await response.json()
+        print(result)
+        break
         return result['choices'][0]['message']['content'].strip()
     except Exception as e:
         print(f"Error fetching question: {e}")
