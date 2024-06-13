@@ -47,6 +47,7 @@ def main(args):
     if args.qu_count > 1:
         for count in range(2, args.qu_count+1):
             curr_question_embeddings = np.load(args.data_dir + 'questions_atom_aware_' + str(count) + '_' + args.embedder + '.npy')
+            print(count, len(curr_question_embeddings))
             question_embeddings = np.concatenate([question_embeddings, curr_question_embeddings], axis=0)
         atom_idx_to_chunk_idx = np.tile(atom_idx_to_chunk_idx, args.qu_count)
 
