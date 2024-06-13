@@ -53,6 +53,7 @@ def main(args):
 
     hits = 0
     for count, label in enumerate(labels):
+        print(chunk_indices[count][:15])
         curr_chunk_idxs = pd.unique(chunk_indices[count])[:args.K]
         if label in curr_chunk_idxs: hits += 1
         if len(pd.unique(chunk_indices[count])) < args.K: print(count, "Something is wrong")
