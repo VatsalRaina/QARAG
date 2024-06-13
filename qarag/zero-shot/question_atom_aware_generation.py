@@ -22,11 +22,13 @@ def main(args):
         questions = json.load(f)
     start_point = len(questions)
 
+    print("Starting at:", len(start_point))
+
     with open(args.data_dir + 'atoms.json', 'r') as f:
         all_chunks_atoms = json.load(f)
 
     with open(args.data_dir + 'chunks.json', 'r') as f:
-            chunks = json.load(f)
+        chunks = json.load(f)
 
     model = "gpt-3.5-turbo"
 
