@@ -40,8 +40,6 @@ def main(args):
     query_embeddings = np.load(args.data_dir + 'queries_' + args.embedder + '.npy')
     query_embeddings = torch.from_numpy(query_embeddings)
     qu_idx_to_chunk_idx = np.load(args.data_dir + 'questions_aware_mapping'+ '.npy')
-    if args.qu_count > 1:
-        qu_idx_to_chunk_idx = np.tile(qu_idx_to_chunk_idx, args.qu_count)
 
     all_chunk_indices = []
     MAX = 15
