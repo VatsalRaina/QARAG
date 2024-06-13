@@ -46,7 +46,7 @@ def main(args):
         curr_question_embeddings = np.load(args.data_dir + 'questions_aware_' + str(count) + '_' + args.embedder + '.npy')
         question_embeddings = np.concatenate([question_embeddings, curr_question_embeddings], axis=0)
     
-    curr_question_embeddings = np.load(args.data_dir + 'questions_aware_bi_' + str(count) + '_' + args.embedder + '.npy')
+    curr_question_embeddings = np.load(args.data_dir + 'questions_aware_bi_' + args.embedder + '.npy')
     question_embeddings = np.concatenate([question_embeddings, curr_question_embeddings], axis=0)
     for count in range(2, 6):
         curr_question_embeddings = np.load(args.data_dir + 'questions_aware_bi_' + str(count) + '_' + args.embedder + '.npy')
