@@ -40,15 +40,16 @@ def main(args):
     query_embeddings = torch.from_numpy(query_embeddings)
     question_embeddings = np.load(args.data_dir + 'questions_aware_bi_' + args.embedder + '.npy')
     qu_idx_to_chunk_idx = np.load(args.data_dir + 'questions_aware_mapping'+ '.npy')
-    
+    print("Num mappings:", len(qu_idx_to_chunk_idx))
+    print(1, len(question_embeddings))
+
     if args.qu_count > 1:
         for count in range(2, args.qu_count+1):
             curr_question_embeddings = np.load(args.data_dir + 'questions_aware_bi_' + str(count) + '_' + args.embedder + '.npy')
             print(count, len(curr_question_embeddings))
             question_embeddings = np.concatenate([question_embeddings, curr_question_embeddings], axis=0)
         qu_idx_to_chunk_idx = np.tile(qu_idx_to_chunk_idx, args.qu_count)
-    print("Num mappings:", len(qu_idx_to_chunk_idx))
-    print(len(question_embeddings))
+
     question_embeddings = torch.from_numpy(question_embeddings)
 
     # Find closest embeddings for each query (using cosine distance)
