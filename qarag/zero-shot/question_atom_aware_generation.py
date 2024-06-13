@@ -22,7 +22,7 @@ def main(args):
         questions = json.load(f)
     start_point = len(questions)
 
-    print("Starting at:", len(start_point))
+    print("Starting at:", start_point)
 
     with open(args.data_dir + 'atoms.json', 'r') as f:
         all_chunks_atoms = json.load(f)
