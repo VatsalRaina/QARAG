@@ -99,6 +99,9 @@ if __name__ == "__main__":
             print("openai.error.TimeoutError... #{}".format(count))
             print("restart in 20 seconds")
             time.sleep(20)
+        except Exception as e:
+            print(e)
+            time.sleep(20)
 
 
 # """
