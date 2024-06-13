@@ -66,7 +66,7 @@ def main(args):
     question_embeddings = torch.from_numpy(question_embeddings)
 
     # Find closest embeddings for each query (using cosine distance)
-    min_indices = get_neighbours(question_embeddings, query_embeddings, args.K * 25 * args.qu_count)
+    min_indices = get_neighbours(query_embeddings, question_embeddings, args.K * 25 * args.qu_count)
     chunk_indices = atom_idx_to_chunk_idx[min_indices]
 
     hits = 0
