@@ -12,31 +12,31 @@ parser.add_argument('--save_path', type=str, help='Load path to save results wit
 
 async def fetch_question(session, model, chunk, atom, timeout_secs):
     prompt = "Generate a single closed-answer question using:\n" + chunk + "\nThe answer should be present in:\n" + atom
-    try:
-        async with session.post(
-            'https://api.openai.com/v1/chat/completions',
-            headers={
-                'Authorization': f'Bearer {openai.api_key}',
-                'Content-Type': 'application/json'
-            },
-            json={
-                'model': model,
-                'messages': [{'role': 'user', 'content': prompt}]
-            },
-            timeout=aiohttp.ClientTimeout(total=timeout_secs)
-        ) as response:
-            result = await response.json()
-            return result['choices'][0]['message']['content'].strip()
-    except Exception as e:
-        print(f"Error fetching question: {e}")
-        return None
+    # try:
+    async with session.post(
+        'https://api.openai.com/v1/chat/completions',
+        headers={
+            'Authorization': f'Bearer {openai.api_key}',
+            'Content-Type': 'application/json'
+        },
+        json={
+            'model': model,
+            'messages': [{'role': 'user', 'content': prompt}]
+        },
+        timeout=aiohttp.ClientTimeout(total=timeout_secs)
+    ) as response:
+        result = await response.json()
+        return result['choices'][0]['message']['content'].strip()
+    # except Exception as e:
+    #     print(f"Error fetching question: {e}")
+    #     return None
 
 async def process_chunk(session, model, chunk, chunk_atoms, timeout_secs):
     tasks = []
     for atom in chunk_atoms:
         tasks.append(fetch_question(session, model, chunk, atom, timeout_secs))
     chunk_questions = await asyncio.gather(*tasks)
-    return [q for q in chunk_questions if q is not None]
+    return [q for q in chunk_questions]
 
 async def main(args):
     openai.api_key = args.api_key
@@ -98,6 +98,9 @@ if __name__ == "__main__":
             print("openai.error.TimeoutError... #{}".format(count))
             print("restart in 20 seconds")
             time.sleep(20)
+        except Exception as e:
+            print(e)
+            time.sleep(10)
 
 
 
