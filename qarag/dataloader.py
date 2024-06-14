@@ -135,6 +135,25 @@ def process_sub_pubmedqa(pubmedqa_dir, save_dir):
     with open(save_dir + 'data.json', 'w') as f:
         json.dump(sub_data, f)
 
+def process_bipar(save_dir):
+
+    with open(save_dir + 'bipar_monolingual_test.json', 'r') as f:
+        data = json.load(f)['data']
+
+    simplified_data = []
+    chunks = []
+    for count, ex in enumerate(data):
+        chunk = ex['paragraphs'][0]['context']
+        question = ex['paragraphs'][0]['question']
+        curr = {'question': question, 'context_id': count }
+        chunks.append(chunk)
+
+    with open(save_dir + 'chunks.json', 'w') as f:
+        json.dump(chunks, f)
+
+    with open(save_dir + 'data.json', 'w') as f:
+        json.dump(simplified_data, f) 
+
 def main(args):
 
     # print("Started processing SQuAD.")
@@ -144,7 +163,8 @@ def main(args):
     #process_clapnq(args.save_dir)
     #process_sub_clapnq(args.extra_dir, args.save_dir)
     #process_pubmedqaL(args.save_dir)
-    process_sub_pubmedqa(args.extra_dir, args.save_dir)
+    #process_sub_pubmedqa(args.extra_dir, args.save_dir)
+    process_bipar(args.save_dir)
 
 
 if __name__ == "__main__":
