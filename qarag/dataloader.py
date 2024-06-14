@@ -142,11 +142,15 @@ def process_bipar(save_dir):
 
     simplified_data = []
     chunks = []
-    for count, ex in enumerate(data):
+    for chunk_id, ex in enumerate(data):
         chunk = ex['paragraphs'][0]['context']
-        question = ex['paragraphs'][0]['question']
-        curr = {'question': question, 'context_id': count }
+        for item in ex['paragraphs'][0]['qas']:
+            question = item['question']
+            curr = {'question': question, 'context_id': chunk_id }
         chunks.append(chunk)
+
+    print("Total chunks:", len(chunks))
+    print("Total queries:", len(simplified_data))
 
     with open(save_dir + 'chunks.json', 'w') as f:
         json.dump(chunks, f)
