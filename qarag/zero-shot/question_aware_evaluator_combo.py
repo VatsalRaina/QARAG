@@ -41,14 +41,14 @@ def main(args):
     qu_idx_to_chunk_idx = np.load(args.data_dir + 'questions_aware_mapping'+ '.npy')
     atom_idx_to_chunk_idx = np.load(args.data_dir + 'atoms_mapping'+ '.npy')
     
-    TOT = 20
+    TOT = 25
 
     for count in range(2, 16):
         curr_question_embeddings = np.load(args.data_dir + 'questions_aware_' + str(count) + '_' + args.embedder + '.npy')
         question_embeddings = np.concatenate([question_embeddings, curr_question_embeddings], axis=0)
     curr_question_embeddings = np.load(args.data_dir + 'questions_aware_bi_' + args.embedder + '.npy')
     question_embeddings = np.concatenate([question_embeddings, curr_question_embeddings], axis=0)
-    for count in range(2, 6):
+    for count in range(2, 11):
         curr_question_embeddings = np.load(args.data_dir + 'questions_aware_bi_' + str(count) + '_' + args.embedder + '.npy')
         question_embeddings = np.concatenate([question_embeddings, curr_question_embeddings], axis=0)
     qu_idx_to_chunk_idx = np.tile(qu_idx_to_chunk_idx, TOT)
