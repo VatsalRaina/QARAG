@@ -147,6 +147,7 @@ def process_bipar(save_dir):
         for item in ex['paragraphs'][0]['qas']:
             question = item['question']
             curr = {'question': question, 'context_id': chunk_id }
+            simplified_data.append(curr)
         chunks.append(chunk)
 
     print("Total chunks:", len(chunks))
