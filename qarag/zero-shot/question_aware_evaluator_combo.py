@@ -53,15 +53,14 @@ def main(args):
         question_embeddings = np.concatenate([question_embeddings, curr_question_embeddings], axis=0)
     qu_idx_to_chunk_idx = np.tile(qu_idx_to_chunk_idx, TOT)
 
-    TOT2 = 15
-    curr_question_embeddings = np.load(args.data_dir + 'questions_atom_aware_' + args.embedder + '.npy')
-    question_embeddings = np.concatenate([question_embeddings, curr_question_embeddings], axis=0)
-    for count in range(2, 16):
-        curr_question_embeddings = np.load(args.data_dir + 'questions_atom_aware_' + str(count) + '_' + args.embedder + '.npy')
-        question_embeddings = np.concatenate([question_embeddings, curr_question_embeddings], axis=0)
-    atom_idx_to_chunk_idx = np.tile(atom_idx_to_chunk_idx, TOT2)
-
-    qu_idx_to_chunk_idx = np.concatenate([qu_idx_to_chunk_idx, atom_idx_to_chunk_idx], axis=0)
+    TOT2 = 0
+    # curr_question_embeddings = np.load(args.data_dir + 'questions_atom_aware_' + args.embedder + '.npy')
+    # question_embeddings = np.concatenate([question_embeddings, curr_question_embeddings], axis=0)
+    # for count in range(2, 16):
+    #     curr_question_embeddings = np.load(args.data_dir + 'questions_atom_aware_' + str(count) + '_' + args.embedder + '.npy')
+    #     question_embeddings = np.concatenate([question_embeddings, curr_question_embeddings], axis=0)
+    # atom_idx_to_chunk_idx = np.tile(atom_idx_to_chunk_idx, TOT2)
+    # qu_idx_to_chunk_idx = np.concatenate([qu_idx_to_chunk_idx, atom_idx_to_chunk_idx], axis=0)
 
     question_embeddings = torch.from_numpy(question_embeddings)
 
