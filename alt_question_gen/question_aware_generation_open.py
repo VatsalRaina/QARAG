@@ -40,7 +40,7 @@ def main(args):
             input_ids = tokenizer(input_text, return_tensors="pt").input_ids.to("cuda")
             outputs = model.generate(input_ids)
             generated_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
-            print(generated_text)
+            #print(generated_text)
             chunk_questions.append(generated_text)
         batch_examples.append(chunk_questions)
         if len(batch_examples) == 1:
