@@ -39,7 +39,7 @@ def main(args):
             input_text = "Generate a single closed-answer question using:\n" + chunk + "\nThe answer should be present in the sentence:\n" + sentence
             input_ids = tokenizer(input_text, return_tensors="pt").input_ids.to("cuda")
             outputs = model.generate(input_ids)
-            generated_text = tokenizer.decode(outputs[0])
+            generated_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
             print(generated_text)
             chunk_questions.append(generated_text)
         batch_examples.append(chunk_questions)
