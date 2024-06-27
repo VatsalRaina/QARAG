@@ -11,7 +11,7 @@ from transformers import T5Tokenizer, T5ForConditionalGeneration
 parser = argparse.ArgumentParser(description='Get all command line arguments.')
 parser.add_argument('--data_dir', type=str, default='', help='Specify the path to the data directory.')
 parser.add_argument('--api_key', type=str, help='Load OpenAI API key')
-parser.add_argument('--model', type=str, help='Huggingface model')
+parser.add_argument('--model', type=str, default='flan-t5-small', help='Huggingface model')
 parser.add_argument('--save_path', type=str, help='Load path to save results with generated questions')
 
 
@@ -24,8 +24,8 @@ def main(args):
     with open(args.data_dir + 'chunks.json', 'r') as f:
         chunks = json.load(f)
 
-    tokenizer = T5Tokenizer.from_pretrained("google/flan-t5-small")
-    model = T5ForConditionalGeneration.from_pretrained("google/flan-t5-small", device_map="auto")
+    tokenizer = T5Tokenizer.from_pretrained("google/" + args.model)
+    model = T5ForConditionalGeneration.from_pretrained("google/" + args.model, device_map="auto")
 
     batch_examples = []
     for count, chunk in enumerate(chunks):

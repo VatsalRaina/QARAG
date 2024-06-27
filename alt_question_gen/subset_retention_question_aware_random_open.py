@@ -9,6 +9,7 @@ parser = argparse.ArgumentParser(description='Get all command line arguments.')
 parser.add_argument('--data_dir', type=str, default='', help='Specify the path to the data directory.')
 parser.add_argument('--embedder', type=str, default="sentence-t5-base", help='Specify the model name used to search for correct files.')
 parser.add_argument('--save_dir', type=str, default='', help='Path to save all cosine distance matrices.')
+parser.add_argument('--model', type=str, default='flan-t5-small', help='Huggingface model')
 parser.add_argument('--K', type=int, default=1, help='Recall depth.')
 
 
@@ -46,9 +47,9 @@ def main(args):
     MAX = questions_per_sentence
     for count in range(1,MAX+1):
         if count == 1:
-            all_question_embeddings.append( np.load(args.data_dir + 'questions_aware_flan-t5-small_' + args.embedder + '.npy') )
+            all_question_embeddings.append( np.load(args.data_dir + 'questions_aware_' + args.model + '_' + args.embedder + '.npy') )
         else:
-            all_question_embeddings.append( np.load(args.data_dir + 'questions_aware_' + str(count) + '_flan-t5-small_' + args.embedder + '.npy') )
+            all_question_embeddings.append( np.load(args.data_dir + 'questions_aware_' + str(count) + '_' + args.model + '_' + args.embedder + '.npy') )
 
     all_question_embeddings = np.asarray(all_question_embeddings)
     all_question_embeddings = all_question_embeddings.transpose(1, 0, 2)    # Now [num_atoms, 15, emb_dim]

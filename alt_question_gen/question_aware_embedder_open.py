@@ -7,7 +7,7 @@ import numpy as np
 parser = argparse.ArgumentParser(description='Get all command line arguments.')
 parser.add_argument('--data_dir', type=str, default='', help='Specify the path to the data directory.')
 parser.add_argument('--embedder', type=str, default="sentence-t5-base", help='Specify the path to the data directory.')
-parser.add_argument('--model', type=str, help='Huggingface model')
+parser.add_argument('--model', type=str, default='flan-t5-small', help='Huggingface model')
 parser.add_argument('--qu_count', type=int, default=1, help='Specify the path to the data directory.')
 
 
@@ -21,7 +21,7 @@ def main(args):
     if args.qu_count == 1:
 
         print("Started embedding questions.")
-        with open(args.data_dir + 'gen_questions_aware_flan-t5-small.json', 'r') as f:
+        with open(args.data_dir + 'gen_questions_aware_' + args.model + '.json', 'r') as f:
             questions = json.load(f)
         unwrapped_questions = []
         qu_idx_to_chunk_idx = []
@@ -34,14 +34,14 @@ def main(args):
         if 'e5' in args.embedder:
             unwrapped_questions = ['query: ' + ch for ch in unwrapped_questions]
         question_embeddings = np.asarray(model.encode(unwrapped_questions))
-        with open(args.data_dir + 'questions_aware_flan-t5-small_' + args.embedder + '.npy', 'wb') as f:
+        with open(args.data_dir + 'questions_aware_' + args.model + '_' + args.embedder + '.npy', 'wb') as f:
             np.save(f, question_embeddings)
         print("Finished embedding questions.")
 
     else:
 
         print("Started embedding questions.")
-        with open(args.data_dir + 'gen_questions_aware_' + str(args.qu_count) + '_flan-t5-small.json', 'r') as f:
+        with open(args.data_dir + 'gen_questions_aware_' + str(args.qu_count) + '_' + args.model + '.json', 'r') as f:
             questions = json.load(f)
         unwrapped_questions = []
         for count, question_set in enumerate(questions):
@@ -49,7 +49,7 @@ def main(args):
         if 'e5' in args.embedder:
             unwrapped_questions = ['query: ' + ch for ch in unwrapped_questions]
         question_embeddings = np.asarray(model.encode(unwrapped_questions))
-        with open(args.data_dir + 'questions_aware_' + str(args.qu_count) + '_flan-t5-small_' + args.embedder + '.npy', 'wb') as f:
+        with open(args.data_dir + 'questions_aware_' + str(args.qu_count) + '_' + args.model + '_' + args.embedder + '.npy', 'wb') as f:
             np.save(f, question_embeddings)
         print("Finished embedding questions.")
 

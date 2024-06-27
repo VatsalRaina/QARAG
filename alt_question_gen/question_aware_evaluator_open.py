@@ -7,7 +7,7 @@ import torch
 parser = argparse.ArgumentParser(description='Get all command line arguments.')
 parser.add_argument('--data_dir', type=str, default='', help='Specify the path to the data directory.')
 parser.add_argument('--embedder', type=str, default="sentence-t5-base", help='Specify the model name used to search for correct files.')
-parser.add_argument('--model', type=str, help='Huggingface model')
+parser.add_argument('--model', type=str, default='flan-t5-small', help='Huggingface model')
 parser.add_argument('--qu_count', type=int, default=1, help='Specify the path to the data directory.')
 parser.add_argument('--K', type=int, default=1, help='Recall depth.')
 
@@ -39,12 +39,12 @@ def main(args):
 
     query_embeddings = np.load(args.data_dir + 'queries_' + args.embedder + '.npy')
     query_embeddings = torch.from_numpy(query_embeddings)
-    question_embeddings = np.load(args.data_dir + 'questions_aware_flan-t5-small_' + args.embedder + '.npy')
+    question_embeddings = np.load(args.data_dir + 'questions_aware_' + args.model + '_' + args.embedder + '.npy')
     qu_idx_to_chunk_idx = np.load(args.data_dir + 'questions_aware_mapping'+ '.npy')
     
     if args.qu_count > 1:
         for count in range(2, args.qu_count+1):
-            curr_question_embeddings = np.load(args.data_dir + 'questions_aware_' + str(count) + '_flan-t5-small_' + args.embedder + '.npy')
+            curr_question_embeddings = np.load(args.data_dir + 'questions_aware_' + str(count) + '_' + args.model + '_' + args.embedder + '.npy')
             question_embeddings = np.concatenate([question_embeddings, curr_question_embeddings], axis=0)
         qu_idx_to_chunk_idx = np.tile(qu_idx_to_chunk_idx, args.qu_count)
 
