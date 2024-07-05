@@ -99,7 +99,7 @@ def main(args):
 
     # Cut-off threshold for similarity
     #taus = [0.7, 0.81, 0.9, 0.95, 0.98]
-    taus = [0.88, 0.90, 0.93, 0.96, 1.0]
+    taus = [0.84, 0.88, 0.90, 0.93, 0.96, 1.0]
 
     for tau in taus:
         print("Tau:", tau)
