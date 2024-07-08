@@ -18,9 +18,11 @@ def main(args):
 
     labels = []
     for ex in dev_split:
-        print(ex.keys())
-        label = ex['is_impossible']
-        labels.append(label)
+        answers = ex['answers']
+        if len(answers) == 0:
+            labels.append(True)
+        else:
+            labels.append(False)
 
     threshold = 0.5
     predictions = [score >= threshold for score in scores]
