@@ -18,6 +18,7 @@ def main(args):
 
     labels = []
     for ex in dev_split:
+        print(ex.keys())
         label = ex['is_impossible']
         labels.append(label)
 
