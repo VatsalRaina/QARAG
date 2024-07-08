@@ -10,7 +10,7 @@ parser.add_argument('--scores_path', type=str, help='Load path to save unanswera
 
 def main(args):
 
-    with open(args.save_path) as f:
+    with open(args.scores_path) as f:
         scores = json.load(f)
 
     dataset = load_dataset("rajpurkar/squad_v2")
