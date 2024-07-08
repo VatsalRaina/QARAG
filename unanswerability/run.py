@@ -5,7 +5,7 @@ from transformers import T5Tokenizer, T5ForConditionalGeneration
 from datasets import load_dataset
 
 parser = argparse.ArgumentParser(description='Get all command line arguments.')
-parser.add_argument('--model', type=str, default='flan-t5-small', help='Huggingface model')
+parser.add_argument('--model', type=str, default='flan-t5-large', help='Huggingface model')
 parser.add_argument('--save_path', type=str, help='Load path to save unanswerability scores')
 
 
@@ -33,7 +33,7 @@ def main(args):
         context = ex['context']
         question = ex['question']
 
-        input_text = "Consider the following reading comprehension question.\n\nQuestion:\n" + question + "\n\nContext:\n" + context + "\n\nIs this question unanswerable? Reply yes or no only."
+        input_text = "Consider the following reading comprehension question.\n\nQuestion:\n" + question + "\n\nContext:\n" + context + "\n\nIs this question answerable? Reply yes or no only."
         inputs = tokenizer(input_text, return_tensors="pt").to("cuda")        
         with torch.no_grad():
             outputs = model.generate(**inputs, output_scores=True, return_dict_in_generate=True, do_sample=False, max_length=5)
