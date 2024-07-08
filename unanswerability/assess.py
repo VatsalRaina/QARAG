@@ -23,6 +23,7 @@ def main(args):
             labels.append(False)
         else:
             labels.append(True)
+    labels = labels[::-1]
 
     threshold = 0.5
     predictions = [score >= threshold for score in scores]
