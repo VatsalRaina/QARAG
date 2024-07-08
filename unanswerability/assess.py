@@ -1,5 +1,6 @@
 import json
 import argparse
+import numpy as np
 from datasets import load_dataset
 from sklearn.metrics import precision_recall_fscore_support
 
@@ -24,16 +25,24 @@ def main(args):
         else:
             labels.append(True)
 
-    threshold = 0.7
-    predictions = [score >= threshold for score in scores]
+    thresholds = np.arange(0.0, 1.0, 0.01)
+    best_f1 = 0
+    best_threshold = 0
 
-    # Compute precision, recall, and F1 score
-    precision, recall, f1, _ = precision_recall_fscore_support(labels, predictions, average='binary')
+    for threshold in thresholds:
+        predictions = [score >= threshold for score in scores]
+        precision, recall, f1, _ = precision_recall_fscore_support(labels, predictions, average='binary')
+        
+        if f1 > best_f1:
+            best_f1 = f1
+            best_threshold = threshold
 
-    # Print the results
-    print(f"Precision: {precision}")
-    print(f"Recall: {recall}")
-    print(f"F1 Score: {f1}")
+        print(f"Threshold: {threshold:.2f}, Precision: {precision:.4f}, Recall: {recall:.4f}, F1 Score: {f1:.4f}")
+
+    print(f"\nBest Threshold: {best_threshold:.2f}")
+    print(f"Best Precision: {precision:.4f}")
+    print(f"Best Recall: {recall:.4f}")
+    print(f"Best F1 Score: {best_f1:.4f}")
 
 
 
