@@ -28,6 +28,8 @@ def main(args):
     thresholds = np.arange(0.0, 1.0, 0.01)
     best_f1 = 0
     best_threshold = 0
+    best_precision = 0
+    best_recall = 0
 
     for threshold in thresholds:
         predictions = [score >= threshold for score in scores]
@@ -36,12 +38,14 @@ def main(args):
         if f1 > best_f1:
             best_f1 = f1
             best_threshold = threshold
+            best_precision = precision
+            best_recall = recall
 
         print(f"Threshold: {threshold:.2f}, Precision: {precision:.4f}, Recall: {recall:.4f}, F1 Score: {f1:.4f}")
 
     print(f"\nBest Threshold: {best_threshold:.2f}")
-    print(f"Best Precision: {precision:.4f}")
-    print(f"Best Recall: {recall:.4f}")
+    print(f"Best Precision: {best_precision:.4f}")
+    print(f"Best Recall: {best_recall:.4f}")
     print(f"Best F1 Score: {best_f1:.4f}")
 
 
