@@ -23,9 +23,8 @@ def main(args):
             labels.append(False)
         else:
             labels.append(True)
-    labels = labels[::-1]
 
-    threshold = 0.5
+    threshold = 0.6
     predictions = [score >= threshold for score in scores]
 
     # Compute precision, recall, and F1 score
