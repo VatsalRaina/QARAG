@@ -20,9 +20,9 @@ def main(args):
     for ex in dev_split:
         answers = ex['answers']
         if len(answers['text']) == 0:
-            labels.append(True)
-        else:
             labels.append(False)
+        else:
+            labels.append(True)
 
     threshold = 0.5
     predictions = [score >= threshold for score in scores]
