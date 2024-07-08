@@ -19,7 +19,7 @@ def main(args):
     labels = []
     for ex in dev_split:
         answers = ex['answers']
-        if len(answers) == 0:
+        if len(answers['text']) == 0:
             labels.append(True)
         else:
             labels.append(False)
