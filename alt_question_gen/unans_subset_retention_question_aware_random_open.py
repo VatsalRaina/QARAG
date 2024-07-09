@@ -65,7 +65,7 @@ def main(args):
     all_question_embeddings = np.asarray(all_question_embeddings)
     unans_scores = np.asarray(unans_scores)
     all_question_embeddings = all_question_embeddings.transpose(1, 0, 2)    # Now [num_atoms, 15, emb_dim]
-    unans_scores = unans_scores.transpose(1,0)
+    unans_scores = unans_scores.transpose(1,0) # [num_atoms, 15]
 
     qu_idx_to_chunk_idx = np.load(args.data_dir + 'questions_aware_mapping'+ '.npy')
 
@@ -101,8 +101,7 @@ def main(args):
             retained_qu_idx_to_chunk_idx = np.asarray( [ chunk_idx ] * len(idxs) )
             retained_question_embeddings = arr[idxs]
 
-            unans_arr = grouped_unanswerability_scores[chunk_idx]
-            print(unans_arr)
+            unans_arr = np.concatenate( grouped_unanswerability_scores[chunk_idx], axis=0)
             retained_unans_scores = unans_arr[idxs]
 
             if i==0:
