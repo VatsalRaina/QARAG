@@ -19,8 +19,8 @@ def main(args):
         scores = json.load(f)
     start_point = len(scores)
 
-    tokenizer = T5Tokenizer.from_pretrained("google/" + args.model)
-    model = T5ForConditionalGeneration.from_pretrained("google/" + args.model, device_map="auto")
+    tokenizer = T5Tokenizer.from_pretrained("google/" + args.unans_model)
+    model = T5ForConditionalGeneration.from_pretrained("google/" + args.unans_model, device_map="auto")
 
     # Token IDs for 'yes' and 'no'
     yes_token_id = tokenizer.convert_tokens_to_ids("▁yes")
