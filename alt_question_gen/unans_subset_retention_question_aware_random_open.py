@@ -47,10 +47,11 @@ def main(args):
     for k in range(1,16):
         with open(args.unans_dir + str(k) + '.json', 'r') as f:
             sub_unans_scores = json.load(f)
-            unravelled_sub_unans_scores = []
-            for x in sub_unans_scores:
-                unravelled_sub_unans_scores.extend(x)
-            unans_scores.append(unravelled_sub_unans_scores)
+        unravelled_sub_unans_scores = []
+        for x in sub_unans_scores:
+            unravelled_sub_unans_scores.extend(x)
+        print(len(unravelled_sub_unans_scores))
+        unans_scores.append(unravelled_sub_unans_scores)
 
     all_question_embeddings = []
     questions_per_sentence = 15
