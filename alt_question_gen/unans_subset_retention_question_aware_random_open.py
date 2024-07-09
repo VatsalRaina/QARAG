@@ -64,7 +64,7 @@ def main(args):
     all_question_embeddings = np.asarray(all_question_embeddings)
     unans_scores = np.asarray(unans_scores)
     all_question_embeddings = all_question_embeddings.transpose(1, 0, 2)    # Now [num_atoms, 15, emb_dim]
-    unans_scores = unans_scores.transpoe(1,0)
+    unans_scores = unans_scores.transpose(1,0)
 
     qu_idx_to_chunk_idx = np.load(args.data_dir + 'questions_aware_mapping'+ '.npy')
 
