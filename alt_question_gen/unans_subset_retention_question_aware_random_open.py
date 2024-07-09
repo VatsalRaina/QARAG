@@ -101,6 +101,7 @@ def main(args):
             retained_question_embeddings = arr[idxs]
 
             unans_arr = grouped_unanswerability_scores[chunk_idx]
+            print(unans_arr)
             retained_unans_scores = unans_arr[idxs]
 
             if i==0:
